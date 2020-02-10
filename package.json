@@ -1,0 +1,29 @@
+{
+    "name": "mp",
+    "displayName": "MP",
+    "description": "Syntax highlight for MP",
+    "version": "0.0.1",
+    "publisher": "Adrian Hernandez",
+    "engines": {
+        "vscode": "^1.42.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "grammars": [
+            {
+                "language": "html",
+                "scopeName": "text.html.mp",
+                "path": "./syntaxes/mp.tmLanguage.json",
+                "injectTo": ["text.html"],
+                "embeddedLanguages": {
+                    "meta.embedded.perl": "perl"
+                },
+                "tokenTypes": {
+                    "meta.embedded.perl": "other"
+                }
+            }
+        ]
+    }
+}

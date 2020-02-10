@@ -1,0 +1,24 @@
+<!--MPBLOCK: __FILE__-->
+	<!--MPVAR: mpsql_temp_table =~ s/\t/ /g-->
+	<!--MPVAR: mpsql_temp_table_expanded = mpExpandSQL(${mpsql_temp_table}, [])-->
+	<!--MPVAR: mpsql =~ s/\t/ /g-->
+	<!--MPVAR: json_href = {}-->
+	<!--MPFUNCTION: ${json_href}->{'rows'} = []-->
+	<!--MPFUNCTION: ${json_href}->{'total'} = mpPageCount($dbh, ${mpsql}, [], 1)-->
+	<!--MPVAR: mpsql = (defined(${offset}) && defined(${limit})) ? ${mpsql} . " LIMIT " . ${offset} . ", " . "${limit}" : ${mpsql}-->
+	<!--MPVAR: mpsql_expanded = mpExpandSQL(${mpsql}, [])-->
+	<!--MPIF: ${DEBUG}-->
+		<!--MPFUNCTION: ${json_href}->{'mpsql'} = ${mpsql_expanded}-->
+		<!--MPFUNCTION: ${json_href}->{'mpsql_temp_table'} = ${mpsql_temp_table_expanded}-->
+	<!--MPENDIF-->
+
+	<!--MPFUNCTION: (${status},${rows},${sth},${fields}) = mpSQLLoop($dbh, ${mpsql})-->
+	<!--MPLOOP: (@{${rows}})-->
+		<!--MPVAR: temp_array = ${f1}-->
+			<!--MPVAR: row_href = {}-->
+		<!--MPLOOP: (@{${fields}})-->
+			<!--MPFUNCTION: ${row_href}->{${f1}} = ${temp_array}->[${i} - 1]-->
+		<!--MPENDLOOP-->
+		<!--MPFUNCTION: push(@{${json_href}->{'rows'}}, ${row_href})-->
+	<!--MPENDLOOP-->
+<!--MPENDBLOCK: __FILE__-->

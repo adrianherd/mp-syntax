@@ -1,0 +1,67 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"scopeName": "text.html.mp",
+	"name": "MP",
+	"injectionsSelector": "L:comment.block",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)?(\\s*-->)",
+			"captures": {
+				"0": {"name": "meta.embedded.inline.mp"},
+				"1": {"name": "punctuation.definition.mp"},
+				"2": {
+					"name": "entity.name.tag.mp",
+					"patterns": [{
+						"match": ".*",
+						"name": "entity.name.selector.mp"
+					}]
+				},
+				"3": {"name": "punctuation.separator.mp"},
+				"4": {
+					"name": "meta.embedded.perl",
+					"patterns": [{
+						"include": "source.perl"
+					}]
+				 },
+				"5": {"name": "punctuation.definition.mp"}
+			}
+		},
+		{
+			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)?(\\s*-->)",
+			"captures": {
+				"0": {"name": "meta.embedded.inline.mp"},
+				"1": {"name": "punctuation.definition.mp"},
+				"2": {
+					"name": "entity.name.tag.mp",
+					"patterns": [{
+						"match": ".*",
+						"name": "entity.name.selector.mp"
+					}]
+				},
+				"3": {"name": "punctuation.separator.mp"},
+				"4": {
+					"name": "meta.embedded.perl",
+					"patterns": [{
+						"include": "source.perl"
+					}]
+				 },
+				"5": {"name": "punctuation.definition.mp"}
+			}
+		}
+	],
+	"repository": {
+        "comments": {
+            "patterns": [{
+                    "begin": "/\\*",
+                    "captures": {
+                      "0":{"name": "punctuation.definition.comment.mp"}
+                    },
+                    "end": "\\*/",
+                    "name": "comment.block.mp"
+            }]
+        }
+    }
+}
