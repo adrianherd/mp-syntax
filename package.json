@@ -10,6 +10,9 @@
     "categories": [
         "Programming Languages"
     ],
+    "repository": {
+        "url": "https://github.com/saffronfries/mp-syntax"
+    },
     "contributes": {
         "grammars": [
             {
