@@ -1,7 +1,7 @@
 {
     "name": "mp",
     "displayName": "MP",
-    "description": "Syntax highlight for MP",
+    "description": "MP syntax highlighting",
     "version": "0.0.1",
     "publisher": "ahernandez",
     "engines": {
