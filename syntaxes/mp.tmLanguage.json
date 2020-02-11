@@ -11,9 +11,9 @@
 			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)?(\\s*-->)",
 			"captures": {
 				"0": {"name": "meta.embedded.inline.mp"},
-				"1": {"name": "punctuation.definition.mp"},
+				"1": {"name": "punctuation.definition.tag.begin.mp"},
 				"2": {
-					"name": "entity.name.tag.mp",
+					"name": "keyword.control.mp",
 					"patterns": [{
 						"match": ".*",
 						"name": "entity.name.selector.mp"
@@ -26,20 +26,16 @@
 						"include": "source.perl"
 					}]
 				 },
-				"5": {"name": "punctuation.definition.mp"}
+				"5": {"name": "punctuation.definition.tag.end.mp"}
 			}
 		},
 		{
 			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)?(\\s*-->)",
 			"captures": {
 				"0": {"name": "meta.embedded.inline.mp"},
-				"1": {"name": "punctuation.definition.mp"},
+				"1": {"name": "punctuation.definition.tag.begin.mp"},
 				"2": {
-					"name": "entity.name.tag.mp",
-					"patterns": [{
-						"match": ".*",
-						"name": "entity.name.selector.mp"
-					}]
+					"name": "keyword.control.mp"
 				},
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
@@ -48,7 +44,7 @@
 						"include": "source.perl"
 					}]
 				 },
-				"5": {"name": "punctuation.definition.mp"}
+				"5": {"name": "punctuation.definition.tag.end.mp"}
 			}
 		}
 	],

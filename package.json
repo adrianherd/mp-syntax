@@ -3,7 +3,7 @@
     "displayName": "MP",
     "description": "Syntax highlight for MP",
     "version": "0.0.1",
-    "publisher": "Adrian Hernandez",
+    "publisher": "ahernandez",
     "engines": {
         "vscode": "^1.42.0"
     },
@@ -19,9 +19,6 @@
                 "injectTo": ["text.html"],
                 "embeddedLanguages": {
                     "meta.embedded.perl": "perl"
-                },
-                "tokenTypes": {
-                    "meta.embedded.perl": "other"
                 }
             }
         ]
