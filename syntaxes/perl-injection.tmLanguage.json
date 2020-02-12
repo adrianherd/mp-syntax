@@ -1,0 +1,11 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"scopeName": "source.mp",
+	"name": "MP",
+	"injectionsSelector": "L:meta.embedded.block.perl",
+	"patterns": [
+		{
+			"include": "source.perl"
+		}
+	]
+}

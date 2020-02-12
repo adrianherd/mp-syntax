@@ -17,12 +17,12 @@
         "grammars": [
             {
                 "language": "html",
-                "scopeName": "text.html.mp",
+                "scopeName": "source.mp",
                 "path": "./syntaxes/mp.tmLanguage.json",
                 "injectTo": ["text.html"],
-                "embeddedLanguages": {
-                    "meta.embedded.perl": "perl"
-                }
+               "embeddedLanguages": {
+                    "meta.embedded.block.perl": "source.perl"
+                } 
             }
         ]
     }
