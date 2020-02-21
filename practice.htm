@@ -13,7 +13,7 @@
 	<!--MPENDIF-->
 
 	<!--MPFUNCTION: (${status},${rows},${sth},${fields}) = mpSQLLoop($dbh, ${mpsql})-->
-	<!--MPLOOP: (@{${rows}})-->
+	<!--MPLOOP: (@{${rows}}) + $dbh-->
 		<!--MPVAR: temp_array = ${f1}-->
 			<!--MPVAR: row_href = {}-->
 		<!--MPLOOP: (@{${fields}})-->
@@ -24,6 +24,6 @@
 <!--MPENDBLOCK: __FILE__-->
 /*p>Hello</p>*/
 <script source="text/javascript">
-
+1 + 1 
 </script>
 

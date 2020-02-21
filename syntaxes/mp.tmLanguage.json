@@ -8,50 +8,36 @@
 			"include": "#comment"
 		},
 		{
-			"include": "#mpstring"
-		},
-		{
-			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)(\\s*-->)",
-			"name": "source.mp",
-			"captures": {
-				"0": {"name": "comment.block.html"},
-				"1": {"name": "punctuation.definition.tag.begin.html"},
-				"2": {
+			"begin": "(<!--)",
+			"beginCaptures": {
+				"0": {"name":"comment.block.html"}
+			},
+			"end": "(-->)",
+			"endCaptures": {
+				"0": {"name":"comment.block.html"}
+			},
+			"patterns": [
+				{
+					"include": "#string"
+				},
+				{
+					"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)",
 					"name": "keyword.control.mp"
 				},
-				"3": {"name": "punctuation.separator.mp"},
-				"4": {
-					"name": "mp.mod-perl",
-					"patterns": [
-						{
-							"include": "#mpstring"
-						},
-						{
-							"include": "#mod-perl"
-						}
-					]
-				},
-				"5": {"name": "punctuation.definition.tag.end.mp"}
-			}
-		},
-		{
-			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)(\\s*-->)",
-			"name": "source.mp",
-			"captures": {
-				"0": {"name": "comment.block.html"},
-				"1": {"name": "punctuation.definition.tag.begin.mp"},
-				"2": {
+				{
+					"match": "(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
 					"name": "keyword.control.mp"
 				},
-				"3": {"name": "punctuation.separator.mp"},
-				"4": {
-					"name": "mp.mod-perl",
-					"patterns": [{
-						"include": "#mod-perl"
-					}]
-				 },
-				"5": {"name": "punctuation.definition.tag.end.mp"}
-			}
+				{
+					"include": "#function"
+				},
+				{
+					"include": "#constant"
+				},
+				{
+					"include": "#variable"
+				}
+			]
 		},
 		{
 			"include": "text.html.basic"
@@ -86,10 +72,10 @@
 				}
 			]
 		},
-		"constants": {
+		"constant": {
 			"patterns": [
 				{
-					"match": "\\W+(\\d+)\\W+",
+					"match": "\\b(\\d+)\\b",
 					"captures": {
 						"1": {"name": "constant.numeric.mp"}
 					}
@@ -101,36 +87,36 @@
 				{
 					"match": "(\\$\\{)(\\w+)(\\})",
 					"captures":{
-						"1": {"name": "punctuation.shiz"},
+						"1": {"name": "punctuation.definition.tag.mp"},
 						"2": {"name": "storage.type.var.mp"},
-						"3": {"name": "punctuation.shiz"}
+						"3": {"name": "punctuation.definition.tag.mp"}
 					}
 				},
 				{
-					"match": "\\W*(\\$\\w+)\\W*",
+					"match": "(\\$\\w+)",
 					"captures":{
 						"1": {"name":"storage.type.var.mp"}
 					}
 				},
 				{
-					"match": "\\W*(\\w+)\\W*",
+					"match": "\\b(\\w+)\\b",
 					"captures": {
 						"1": {"name": "storage.type.var.mp"}
 					}
 				}
 			]
 		},
-		"mpstring": {
+		"string": {
 			"patterns": [
 				{
                     "begin": "'",
                     "end": "'",
-                    "name": "string.quoted.single.html"
+                    "name": "string.quoted.single.mp"
 				},
 				{
 					"begin": "\"",
 					"end": "\"",
-					"name": "string.quoted.double.html"
+					"name": "string.quoted.double.mp"
 				}
 			]
 		}

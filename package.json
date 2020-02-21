@@ -42,7 +42,7 @@
                     "text.html.derivative": "html"
                 },
                 "tokenTypes": {
-                    
+                    "string.quote.double": "other"
                 }
 			}
         ]
