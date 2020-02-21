@@ -37,13 +37,12 @@
                 "path": "./syntaxes/mp.tmLanguage.json",
                 "embeddedLanguages": {
 					"source.mp": "mp",
-                    "source.perl": "perl",
-                    "source.html": "html",
-                    "meta.embedded.block.perl": "perl",
                     "text.html": "html",
                     "text.html.basic": "html",
-                    "text.html.derivative": "html",
-                    "mp.perl": "perl"
+                    "text.html.derivative": "html"
+                },
+                "tokenTypes": {
+                    
                 }
 			}
         ]

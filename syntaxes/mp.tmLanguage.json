@@ -5,11 +5,14 @@
 	"name": "MP",
 	"patterns": [
 		{
-			"include": "#comments"
+			"include": "#comment"
 		},
 		{
-			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)?(\\s*-->)",
-			"name": "text.html.mp",
+			"include": "#mpstring"
+		},
+		{
+			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)(\\s*-->)",
+			"name": "source.mp",
 			"captures": {
 				"0": {"name": "comment.block.html"},
 				"1": {"name": "punctuation.definition.tag.begin.html"},
@@ -19,15 +22,20 @@
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
 					"name": "mp.mod-perl",
-					"patterns": [{
-						"include": "#mod-perl"
-					}]
+					"patterns": [
+						{
+							"include": "#mpstring"
+						},
+						{
+							"include": "#mod-perl"
+						}
+					]
 				},
 				"5": {"name": "punctuation.definition.tag.end.mp"}
 			}
 		},
 		{
-			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)?(\\s*-->)",
+			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)(\\s*-->)",
 			"name": "source.mp",
 			"captures": {
 				"0": {"name": "comment.block.html"},
@@ -46,51 +54,32 @@
 			}
 		},
 		{
-			"name": "mp.other",
-			"patterns": [
-				{
-					"include": "text.html.basic"
-				},
-				{
-					"include": "text.html.derivative"
-				}
-			]
+			"include": "text.html.basic"
+		},
+		{
+			"include": "text.html.derivative"
 		}
 	],
 	"repository": {
 		"mod-perl": {
 			"patterns": [
-				{"include":"#comment"},
-				{"include":"#string"},
 				{"include":"#function"},
-				{"include":"#variable"}
-				
+				{"include":"#variable"},
+				{"include":"mod-perl#mpstring"},
+				{"include":"#mpstring"}
 			]
 		},
         "comment": {
             "patterns": [{
                     "begin": "/\\*",
-                    "captures": {
-                      "0":{"name": "punctuation.definition.comment.mp"}
-                    },
                     "end": "\\*/",
                     "name": "comment.block.mp"
             }]
 		},
-		"string": {
-			"patterns": [
-				{
-					"match": "\\W*('.*')\\W*",
-					"captures": {
-						"1": {"name": "string.quoted.single.mp"}
-					}
-				}
-			]
-		},
 		"function": {
 			"patterns": [
 				{
-					"match": "\\W*(\\w+)\\(\\W*",
+					"match": "(\\w+)\\(",
 					"captures": {
 						"1": {"name":"entity.name.function.mp"}
 					}
@@ -128,6 +117,20 @@
 					"captures": {
 						"1": {"name": "storage.type.var.mp"}
 					}
+				}
+			]
+		},
+		"mpstring": {
+			"patterns": [
+				{
+                    "begin": "'",
+                    "end": "'",
+                    "name": "string.quoted.single.html"
+				},
+				{
+					"begin": "\"",
+					"end": "\"",
+					"name": "string.quoted.double.html"
 				}
 			]
 		}
