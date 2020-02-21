@@ -61,8 +61,10 @@
 		"mod-perl": {
 			"patterns": [
 				{"include":"#comment"},
+				{"include":"#string"},
 				{"include":"#function"},
 				{"include":"#variable"}
+				
 			]
 		},
         "comment": {
@@ -75,12 +77,32 @@
                     "name": "comment.block.mp"
             }]
 		},
+		"string": {
+			"patterns": [
+				{
+					"match": "\\W*('.*')\\W*",
+					"captures": {
+						"1": {"name": "string.quoted.single.mp"}
+					}
+				}
+			]
+		},
 		"function": {
 			"patterns": [
 				{
-					"match": "\\W*(\\w+)\\(.*\\)\\W*",
+					"match": "\\W*(\\w+)\\(\\W*",
 					"captures": {
-						"1": {"name":"entity.name.function"}
+						"1": {"name":"entity.name.function.mp"}
+					}
+				}
+			]
+		},
+		"constants": {
+			"patterns": [
+				{
+					"match": "\\W+(\\d+)\\W+",
+					"captures": {
+						"1": {"name": "constant.numeric.mp"}
 					}
 				}
 			]
@@ -88,7 +110,7 @@
 		"variable": {
 			"patterns": [
 				{
-					"match": "(\\$\\{)([\\w]+)(\\})",
+					"match": "(\\$\\{)(\\w+)(\\})",
 					"captures":{
 						"1": {"name": "punctuation.shiz"},
 						"2": {"name": "storage.type.var.mp"},
@@ -96,13 +118,13 @@
 					}
 				},
 				{
-					"match": "\\W+(\\$\\w+)\\W+",
+					"match": "\\W*(\\$\\w+)\\W*",
 					"captures":{
 						"1": {"name":"storage.type.var.mp"}
 					}
 				},
 				{
-					"match": "\\W+(\\w+)\\W+",
+					"match": "\\W*(\\w+)\\W*",
 					"captures": {
 						"1": {"name": "storage.type.var.mp"}
 					}
