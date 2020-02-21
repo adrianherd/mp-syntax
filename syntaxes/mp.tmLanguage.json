@@ -30,7 +30,7 @@
 			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)?(\\s*-->)",
 			"name": "source.mp",
 			"captures": {
-				"0": {"name": "meta.embedded.inline.mp"},
+				"0": {"name": "comment.block.html"},
 				"1": {"name": "punctuation.definition.tag.begin.mp"},
 				"2": {
 					"name": "keyword.control.mp"
@@ -44,6 +44,14 @@
 				 },
 				"5": {"name": "punctuation.definition.tag.end.mp"}
 			}
+		},
+		{
+			"name": "mp.other",
+			"patterns": [
+				{
+					"include": "text.html.basic"
+				}
+			]
 		}
 	],
 	"repository": {

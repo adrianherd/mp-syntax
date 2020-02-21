@@ -32,8 +32,9 @@
         ],
         "grammars": [
 			{
+                "language": "mp",
 				"scopeName": "source.mp",
-                "path": "./syntaxes/source.tmLanguage.json",
+                "path": "./syntaxes/mp.tmLanguage.json",
                 "embeddedLanguages": {
 					"source.mp": "mp",
                     "source.perl": "perl",
@@ -41,9 +42,8 @@
                     "text.html": "html",
                     "text.html.basic": "html",
                     "text.html.derivative": "html",
-                    "meta.embedded.block.perl": "perl"
-                },
-                "injectTo": ["text.html","source.html","text.html.basic","text.html.derivative"]
+                    "mp.perl": "perl"
+                }
 			}
         ]
     }
