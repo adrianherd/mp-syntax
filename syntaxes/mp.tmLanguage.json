@@ -18,11 +18,11 @@
 				},
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
-					"name": "meta.embedded.block.perl",
+					"name": "mp.mod-perl",
 					"patterns": [{
-						"include": "source.perl"
+						"include": "#mod-perl"
 					}]
-				 },
+				},
 				"5": {"name": "punctuation.definition.tag.end.mp"}
 			}
 		},
@@ -37,9 +37,9 @@
 				},
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
-					"name": "source.mp.perl",
+					"name": "mp.mod-perl",
 					"patterns": [{
-						"include": "source.perl"
+						"include": "#mod-perl"
 					}]
 				 },
 				"5": {"name": "punctuation.definition.tag.end.mp"}
@@ -58,7 +58,14 @@
 		}
 	],
 	"repository": {
-        "comments": {
+		"mod-perl": {
+			"patterns": [
+				{"include":"#comment"},
+				{"include":"#function"},
+				{"include":"#variable"}
+			]
+		},
+        "comment": {
             "patterns": [{
                     "begin": "/\\*",
                     "captures": {
@@ -67,6 +74,40 @@
                     "end": "\\*/",
                     "name": "comment.block.mp"
             }]
-        }
+		},
+		"function": {
+			"patterns": [
+				{
+					"match": "\\W*(\\w+)\\(.*\\)\\W*",
+					"captures": {
+						"1": {"name":"entity.name.function"}
+					}
+				}
+			]
+		},
+		"variable": {
+			"patterns": [
+				{
+					"match": "(\\$\\{)([\\w]+)(\\})",
+					"captures":{
+						"1": {"name": "punctuation.shiz"},
+						"2": {"name": "storage.type.var.mp"},
+						"3": {"name": "punctuation.shiz"}
+					}
+				},
+				{
+					"match": "\\W+(\\$\\w+)\\W+",
+					"captures":{
+						"1": {"name":"storage.type.var.mp"}
+					}
+				},
+				{
+					"match": "\\W+(\\w+)\\W+",
+					"captures": {
+						"1": {"name": "storage.type.var.mp"}
+					}
+				}
+			]
+		}
     }
 }
