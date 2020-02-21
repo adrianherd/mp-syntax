@@ -14,16 +14,37 @@
         "url": "https://github.com/saffronfries/mp-syntax"
     },
     "contributes": {
-        "grammars": [
-            {
-                "language": "html",
-                "scopeName": "text.html.mp",
-                "path": "./syntaxes/mp.tmLanguage.json",
-                "injectTo": ["text.html"],
-                "embeddedLanguages": {
-                    "meta.embedded.perl": "perl"
-                }
+        "languages": [
+			{
+                "id": "mp",
+                "extensions": [
+                    ".htm","html"
+                ],
+				"aliases": [
+					"MP",
+					"mp"
+				],
+				"mimetypes": [
+					"application/x-mp"
+				],
+                "configuration": "./language-configuration.json"
             }
+        ],
+        "grammars": [
+			{
+				"scopeName": "source.mp",
+                "path": "./syntaxes/source.tmLanguage.json",
+                "embeddedLanguages": {
+					"source.mp": "mp",
+                    "source.perl": "perl",
+                    "source.html": "html",
+                    "text.html": "html",
+                    "text.html.basic": "html",
+                    "text.html.derivative": "html",
+                    "meta.embedded.block.perl": "perl"
+                },
+                "injectTo": ["text.html","source.html","text.html.basic","text.html.derivative"]
+			}
         ]
     }
 }

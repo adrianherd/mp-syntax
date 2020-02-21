@@ -2,7 +2,6 @@
     "version": "https://github.com/atom/language-php/commit/b6c5e83016b52311cdc622c2579462861ee91587",
     "name": "MP",
     "scopeName": "text.html.mp",
-
     "injections": {
       "text.html.mp - (meta.embedded | meta.tag), L:((text.html.mp meta.tag) - (meta.embedded.block.mp | meta.embedded.line.mp)), L:(source.js - (meta.embedded.block.mp | meta.embedded.line.mp)), L:(source.css - (meta.embedded.block.mp | meta.embedded.line.mp))": {
         "patterns": [

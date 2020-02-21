@@ -1,27 +1,24 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"scopeName": "text.html.mp",
+	"scopeName": "source.mp",
+	"injectTo": "L:comment.block",
 	"name": "MP",
-	"injectionsSelector": "L:comment.block",
 	"patterns": [
 		{
 			"include": "#comments"
 		},
 		{
 			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)?(\\s*-->)",
+			"name": "text.html.mp",
 			"captures": {
-				"0": {"name": "meta.embedded.inline.mp"},
-				"1": {"name": "punctuation.definition.tag.begin.mp"},
+				"0": {"name": "comment.block.html"},
+				"1": {"name": "punctuation.definition.tag.begin.html"},
 				"2": {
-					"name": "keyword.control.mp",
-					"patterns": [{
-						"match": ".*",
-						"name": "entity.name.selector.mp"
-					}]
+					"name": "keyword.control.mp"
 				},
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
-					"name": "meta.embedded.perl",
+					"name": "meta.embedded.block.perl",
 					"patterns": [{
 						"include": "source.perl"
 					}]
@@ -31,6 +28,7 @@
 		},
 		{
 			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)?(\\s*-->)",
+			"name": "source.mp",
 			"captures": {
 				"0": {"name": "meta.embedded.inline.mp"},
 				"1": {"name": "punctuation.definition.tag.begin.mp"},
@@ -39,7 +37,7 @@
 				},
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
-					"name": "meta.embedded.perl",
+					"name": "text.html.mp.perl",
 					"patterns": [{
 						"include": "source.perl"
 					}]
