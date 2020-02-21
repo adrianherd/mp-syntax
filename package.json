@@ -39,6 +39,7 @@
 					"source.mp": "mp",
                     "source.perl": "perl",
                     "source.html": "html",
+                    "meta.embedded.block.perl": "perl",
                     "text.html": "html",
                     "text.html.basic": "html",
                     "text.html.derivative": "html",

@@ -37,7 +37,7 @@
 				},
 				"3": {"name": "punctuation.separator.mp"},
 				"4": {
-					"name": "text.html.mp.perl",
+					"name": "source.mp.perl",
 					"patterns": [{
 						"include": "source.perl"
 					}]
@@ -50,6 +50,9 @@
 			"patterns": [
 				{
 					"include": "text.html.basic"
+				},
+				{
+					"include": "text.html.derivative"
 				}
 			]
 		}
