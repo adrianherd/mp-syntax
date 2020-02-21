@@ -18,6 +18,9 @@
 			},
 			"patterns": [
 				{
+					"include": "#regex"
+				},
+				{
 					"include": "#string"
 				},
 				{
@@ -75,7 +78,7 @@
 		"constant": {
 			"patterns": [
 				{
-					"match": "\\b(\\d+)\\b",
+					"match": "(\\-?\\d+\\.?\\d?)",
 					"captures": {
 						"1": {"name": "constant.numeric.mp"}
 					}
@@ -99,7 +102,7 @@
 					}
 				},
 				{
-					"match": "\\b(\\w+)\\b",
+					"match": "(\\w+)",
 					"captures": {
 						"1": {"name": "storage.type.var.mp"}
 					}
@@ -117,6 +120,14 @@
 					"begin": "\"",
 					"end": "\"",
 					"name": "string.quoted.double.mp"
+				}
+			]
+		},
+		"regex": {
+			"patterns": [
+				{
+					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
+					"name": "string.regexp"
 				}
 			]
 		}
