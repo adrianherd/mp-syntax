@@ -7,13 +7,21 @@
 			"include": "#comment"
 		},
 		{
+            "name": "constant.character.escape.mp",
+            "match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+        },
+		{
 			"begin": "(<!--)",
 			"beginCaptures": {
-				"0": {"name":"comment.block.html"}
+				"0": {
+					"name": "comment.block.html"
+				}
 			},
 			"end": "(-->)",
 			"endCaptures": {
-				"0": {"name":"comment.block.html"}
+				"0": {
+					"name": "comment.block.html"
+				}
 			},
 			"patterns": [
 				{
@@ -46,27 +54,23 @@
 		}
 	],
 	"repository": {
-		"mod-perl": {
+		"comment": {
 			"patterns": [
-				{"include":"#function"},
-				{"include":"#variable"},
-				{"include":"mod-perl#mpstring"},
-				{"include":"#mpstring"}
+				{
+					"begin": "/\\*",
+					"end": "\\*/",
+					"name": "comment.block.mp"
+				}
 			]
-		},
-        "comment": {
-            "patterns": [{
-                    "begin": "/\\*",
-                    "end": "\\*/",
-                    "name": "comment.block.mp"
-            }]
 		},
 		"function": {
 			"patterns": [
 				{
 					"match": "(\\w+)\\(",
 					"captures": {
-						"1": {"name":"entity.name.function.mp"}
+						"1": {
+							"name": "entity.name.function.mp"
+						}
 					}
 				}
 			]
@@ -76,7 +80,9 @@
 				{
 					"match": "(\\-?\\d+\\.?\\d?)",
 					"captures": {
-						"1": {"name": "constant.numeric.mp"}
+						"1": {
+							"name": "constant.numeric.mp"
+						}
 					}
 				}
 			]
@@ -85,22 +91,32 @@
 			"patterns": [
 				{
 					"match": "(\\$\\{)(\\w+)(\\})",
-					"captures":{
-						"1": {"name": "punctuation.definition.tag.mp"},
-						"2": {"name": "storage.type.var.mp"},
-						"3": {"name": "punctuation.definition.tag.mp"}
+					"captures": {
+						"1": {
+							"name": "punctuation.definition.tag.mp"
+						},
+						"2": {
+							"name": "storage.type.var.mp"
+						},
+						"3": {
+							"name": "punctuation.definition.tag.mp"
+						}
 					}
 				},
 				{
 					"match": "(\\$\\w+)",
-					"captures":{
-						"1": {"name":"storage.type.var.mp"}
+					"captures": {
+						"1": {
+							"name": "storage.type.var.mp"
+						}
 					}
 				},
 				{
 					"match": "(\\w+)",
 					"captures": {
-						"1": {"name": "storage.type.var.mp"}
+						"1": {
+							"name": "storage.type.var.mp"
+						}
 					}
 				}
 			]
@@ -108,14 +124,20 @@
 		"string": {
 			"patterns": [
 				{
-                    "begin": "'",
-                    "end": "'",
-                    "name": "string.quoted.single.mp"
+					"begin": "'",
+					"end": "'",
+					"name": "string.quoted.mp"
 				},
 				{
 					"begin": "\"",
 					"end": "\"",
-					"name": "string.quoted.double.mp"
+					"name": "string.quoted.mp",
+					"patterns": [
+						{
+							"match": "\\\\\"",
+							"name": "constant.character.escape.mp"
+						}
+					]
 				}
 			]
 		},
@@ -135,5 +157,5 @@
 				}
 			]
 		}
-    }
+	}
 }
