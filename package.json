@@ -31,17 +31,6 @@
             }
         ],
         "grammars": [
-<<<<<<< HEAD
-            {
-                "language": "html",
-                "scopeName": "source.mp",
-                "path": "./syntaxes/mp.tmLanguage.json",
-                "injectTo": ["text.html"],
-               "embeddedLanguages": {
-                    "meta.embedded.block.perl": "source.perl"
-                } 
-            }
-=======
 			{
                 "language": "mp",
 				"scopeName": "source.mp",
@@ -51,12 +40,8 @@
                     "text.html": "html",
                     "text.html.basic": "html",
                     "text.html.derivative": "html"
-                },
-                "tokenTypes": {
-                    "string.quote.double": "other"
                 }
 			}
->>>>>>> working-solution
         ]
     }
 }
