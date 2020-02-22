@@ -14,7 +14,24 @@
         "url": "https://github.com/saffronfries/mp-syntax"
     },
     "contributes": {
+        "languages": [
+			{
+                "id": "mp",
+                "extensions": [
+                    ".htm","html"
+                ],
+				"aliases": [
+					"MP",
+					"mp"
+				],
+				"mimetypes": [
+					"application/x-mp"
+				],
+                "configuration": "./language-configuration.json"
+            }
+        ],
         "grammars": [
+<<<<<<< HEAD
             {
                 "language": "html",
                 "scopeName": "source.mp",
@@ -24,6 +41,22 @@
                     "meta.embedded.block.perl": "source.perl"
                 } 
             }
+=======
+			{
+                "language": "mp",
+				"scopeName": "source.mp",
+                "path": "./syntaxes/mp.tmLanguage.json",
+                "embeddedLanguages": {
+					"source.mp": "mp",
+                    "text.html": "html",
+                    "text.html.basic": "html",
+                    "text.html.derivative": "html"
+                },
+                "tokenTypes": {
+                    "string.quote.double": "other"
+                }
+			}
+>>>>>>> working-solution
         ]
     }
 }

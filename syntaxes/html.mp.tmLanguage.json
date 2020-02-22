@@ -1,0 +1,44 @@
+{
+    "version": "https://github.com/atom/language-php/commit/b6c5e83016b52311cdc622c2579462861ee91587",
+    "name": "MP",
+    "scopeName": "text.html.mp",
+    "injections": {
+      "text.html.mp - (meta.embedded | meta.tag), L:((text.html.mp meta.tag) - (meta.embedded.block.mp | meta.embedded.line.mp)), L:(source.js - (meta.embedded.block.mp | meta.embedded.line.mp)), L:(source.css - (meta.embedded.block.mp | meta.embedded.line.mp))": {
+        "patterns": [
+          {
+            "include": "#mp-tag"
+          }
+        ]
+      }
+    },
+    "repository": {
+      "mp-tag": {
+        "patterns": [
+          {
+            "begin": "\\s*<!--",
+            "beginCaptures": {
+              "0": {
+                "name": "punctuation.section.embedded.begin.mp"
+              }
+            },
+            "end": "\\s*-->",
+            "endCaptures": {
+              "0": {
+                "name": "punctuation.section.embedded.end.mp"
+              },
+              "1": {
+                "name": "source.mp"
+              }
+            },
+            "name": "meta.embedded.inline.mp",
+            "contentName": "source.mp",
+            "patterns": [
+              {
+                "include": "source.mp"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }

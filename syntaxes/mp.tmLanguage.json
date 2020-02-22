@@ -2,68 +2,141 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"scopeName": "source.mp",
 	"name": "MP",
-	"injectionsSelector": "L:comment.block",
 	"patterns": [
 		{
-			"include": "#comments"
+			"include": "#comment"
 		},
 		{
-			"match": "(\\s*<!--\\s*)(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)\\s*(:)?(.*)?(\\s*-->)",
-			"captures": {
-				"0": {"name": "meta.embedded.inline.mp"},
-				"1": {"name": "punctuation.definition.tag.begin.mp"},
-				"2": {
-					"name": "keyword.control.mp",
-					"patterns": [{
-						"match": ".*",
-						"name": "entity.name.selector.mp"
-					}]
+			"begin": "(<!--)",
+			"beginCaptures": {
+				"0": {"name":"comment.block.html"}
+			},
+			"end": "(-->)",
+			"endCaptures": {
+				"0": {"name":"comment.block.html"}
+			},
+			"patterns": [
+				{
+					"include": "#regex"
 				},
-				"3": {"name": "punctuation.separator.mp"},
-				"4": {
-					"name": "meta.embedded.block.perl",
-					"patterns": [{
-						"include": "source.perl"
-					}]
-				 },
-				"5": {"name": "punctuation.definition.tag.end.mp"}
-			}
-		},
-		{
-			"match": "(\\s*<!--\\s*)(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)\\s*(:)?(.*)?(\\s*-->)",
-			"captures": {
-				"0": {"name": "meta.embedded.inline.mp"},
-				"1": {"name": "punctuation.definition.tag.begin.mp"},
-				"2": {
+				{
+					"include": "#string"
+				},
+				{
+					"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)",
 					"name": "keyword.control.mp"
 				},
-				"3": {"name": "punctuation.separator.mp"},
-				"4": {
-					"name": "meta.embedded.block.perl.mp",
-					"patterns": [{
-						"include": "source.perl"
-					}]
-				 },
-				"5": {"name": "punctuation.definition.tag.end.mp"}
-			}
-		},{
-			"match": ".*",
-			"patterns": [{
-				"include": "source.html"
-			}]
-
+				{
+					"match": "(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
+					"name": "keyword.control.mp"
+				},
+				{
+					"include": "#function"
+				},
+				{
+					"include": "#constant"
+				},
+				{
+					"include": "#variable"
+				}
+			]
+		},
+		{
+			"include": "text.html.basic"
+		},
+		{
+			"include": "text.html.derivative"
 		}
 	],
 	"repository": {
-        "comments": {
+		"mod-perl": {
+			"patterns": [
+				{"include":"#function"},
+				{"include":"#variable"},
+				{"include":"mod-perl#mpstring"},
+				{"include":"#mpstring"}
+			]
+		},
+        "comment": {
             "patterns": [{
                     "begin": "/\\*",
-                    "captures": {
-                      "0":{"name": "punctuation.definition.comment.mp"}
-                    },
                     "end": "\\*/",
                     "name": "comment.block.mp"
             }]
-        }
+		},
+		"function": {
+			"patterns": [
+				{
+					"match": "(\\w+)\\(",
+					"captures": {
+						"1": {"name":"entity.name.function.mp"}
+					}
+				}
+			]
+		},
+		"constant": {
+			"patterns": [
+				{
+					"match": "(\\-?\\d+\\.?\\d?)",
+					"captures": {
+						"1": {"name": "constant.numeric.mp"}
+					}
+				}
+			]
+		},
+		"variable": {
+			"patterns": [
+				{
+					"match": "(\\$\\{)(\\w+)(\\})",
+					"captures":{
+						"1": {"name": "punctuation.definition.tag.mp"},
+						"2": {"name": "storage.type.var.mp"},
+						"3": {"name": "punctuation.definition.tag.mp"}
+					}
+				},
+				{
+					"match": "(\\$\\w+)",
+					"captures":{
+						"1": {"name":"storage.type.var.mp"}
+					}
+				},
+				{
+					"match": "(\\w+)",
+					"captures": {
+						"1": {"name": "storage.type.var.mp"}
+					}
+				}
+			]
+		},
+		"string": {
+			"patterns": [
+				{
+                    "begin": "'",
+                    "end": "'",
+                    "name": "string.quoted.single.mp"
+				},
+				{
+					"begin": "\"",
+					"end": "\"",
+					"name": "string.quoted.double.mp"
+				}
+			]
+		},
+		"regex": {
+			"patterns": [
+				{
+					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
+					"name": "string.regexp"
+				}
+			]
+		},
+		"sql-injection": {
+			"patterns": [
+				{
+					"begin": "\\w*(",
+					"end": "end"
+				}
+			]
+		}
     }
 }
