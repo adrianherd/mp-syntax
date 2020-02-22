@@ -82,7 +82,7 @@
 		"constant": {
 			"patterns": [
 				{
-					"match": "(\\-?\\d+\\.?\\d?)",
+					"match": "(\\-?\\d+\\.?\\d*)",
 					"captures": {
 						"1": {
 							"name": "constant.numeric.mp"
@@ -94,66 +94,81 @@
 		"variable": {
 			"patterns": [
 				{
-					"match": "(\\$\\{)(\\w+)(\\})",
-					"captures": {
-						"1": {
-							"name": "punctuation.definition.variable.mp"
-						},
-						"2": {
-							"name": "storage.type.var.mp"
-						},
-						"3": {
-							"name": "punctuation.definition.variable.mp"
-						}
-					}
+					"include": "#variable-enclosed"
 				},
 				{
-					"match": "(\\$\\w+)",
-					"captures": {
-						"1": {
-							"name": "storage.type.var.mp"
-						}
-					}
+					"include": "#variable-perl"
 				},
 				{
-					"match": "(\\w+)",
-					"captures": {
-						"1": {
-							"name": "storage.type.var.mp"
-						}
-					}
+					"include": "#variable-bareword"
 				}
 			]
 		},
 		"string": {
 			"patterns": [
+				{"include": "#sql-string-single-quoted"},
+				{"include": "#sql-string-double-quoted"},
 				{
 					"begin": "'",
 					"end": "'",
-					"name": "string.quoted.mp"
+					"name": "string.quoted.single.mp"
 				},
 				{
 					"begin": "\"",
 					"end": "\"",
-					"name": "string.quoted.mp",
+					"name": "string.quoted.double.mp",
 					"patterns": [
+						{"include": "#variable-enclosed"}
 					]
 				}
 			]
 		},
+		"sql-string-double-quoted": {
+            "begin": "\"\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.mp"
+                }
+            },
+            "contentName": "source.sql.embedded.mp",
+            "end": "\"",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.mp"
+                }
+            },
+            "name": "string.quoted.double.sql.mp",
+            "patterns": [
+				{"include": "#variable-enclosed"},
+				{"include": "source.sql"}
+            ]
+        },
+        "sql-string-single-quoted": {
+            "begin": "'\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.begin.mp"
+                }
+            },
+            "contentName": "source.sql.embedded.mp",
+            "end": "'",
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.definition.string.end.mp"
+                }
+            },
+            "name": "string.quoted.single.sql.mp",
+            "patterns": [
+                {
+                    "include": "source.sql"
+                }
+            ]
+        },
 		"regex": {
 			"patterns": [
 				{
 					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
 					"name": "string.regexp"
-				}
-			]
-		},
-		"sql-injection": {
-			"patterns": [
-				{
-					"begin": "\\w*(",
-					"end": "end"
 				}
 			]
 		},
@@ -165,7 +180,42 @@
 					"match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
 				}
 			]
+		},
+		"variable-bareword": {
+			"patterns": [{
+				"match": "(\\w+)",
+				"captures": {
+					"1": {
+						"name": "storage.type.var.mp"
+					}
+				}
+			}]
+		},
+		"variable-perl": {
+			"patterns": [{
+				"match": "(\\$\\w+)",
+				"captures": {
+					"1": {
+						"name": "storage.type.var.mp"
+					}
+				}
+			}]
+		},
+		"variable-enclosed": {
+			"patterns": [{
+				"match": "(\\$\\{)(\\w+)(\\})",
+				"captures": {
+					"1": {
+						"name": "punctuation.definition.variable.mp"
+					},
+					"2": {
+						"name": "storage.type.var.mp"
+					},
+					"3": {
+						"name": "punctuation.definition.variable.mp"
+					}
+				}
+			}]
 		}
-
 	}
 }
