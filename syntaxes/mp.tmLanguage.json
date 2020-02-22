@@ -46,6 +46,10 @@
 				},
 				{
 					"include": "#variable"
+				},
+				{
+					"name": "punctuation.accessor.mp",
+					"match": "->"
 				}
 			]
 		},
@@ -93,13 +97,13 @@
 					"match": "(\\$\\{)(\\w+)(\\})",
 					"captures": {
 						"1": {
-							"name": "punctuation.definition.tag.mp"
+							"name": "punctuation.definition.variable.mp"
 						},
 						"2": {
 							"name": "storage.type.var.mp"
 						},
 						"3": {
-							"name": "punctuation.definition.tag.mp"
+							"name": "punctuation.definition.variable.mp"
 						}
 					}
 				},
@@ -133,10 +137,6 @@
 					"end": "\"",
 					"name": "string.quoted.mp",
 					"patterns": [
-						{
-							"match": "\\\\\"",
-							"name": "constant.character.escape.mp"
-						}
 					]
 				}
 			]
@@ -156,6 +156,16 @@
 					"end": "end"
 				}
 			]
+		},
+		"escape-characters": {
+			"patterns": [
+				{
+					"comment": "This captures a lot of escape characters. Copied from js syntax",
+					"name": "constant.character.escape.mp",
+					"match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+				}
+			]
 		}
+
 	}
 }
