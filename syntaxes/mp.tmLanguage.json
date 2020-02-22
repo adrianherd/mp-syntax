@@ -43,9 +43,6 @@
 		},
 		{
 			"include": "text.html.basic"
-		},
-		{
-			"include": "text.html.derivative"
 		}
 	],
 	"repository": {

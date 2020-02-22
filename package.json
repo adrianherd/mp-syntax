@@ -34,13 +34,7 @@
 			{
                 "language": "mp",
 				"scopeName": "source.mp",
-                "path": "./syntaxes/mp.tmLanguage.json",
-                "embeddedLanguages": {
-					"source.mp": "mp",
-                    "text.html": "html",
-                    "text.html.basic": "html",
-                    "text.html.derivative": "html"
-                }
+                "path": "./syntaxes/mp.tmLanguage.json"
 			}
         ]
     }
