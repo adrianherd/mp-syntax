@@ -12,7 +12,7 @@
 		<!--MPFUNCTION: ${json_href}->{'mpsql_temp_table'} = ${mpsql_temp_table_expanded}-->
 	<!--MPENDIF-->
 
-	<!--MPFUNCTION: (${status},${rows},${sth},${fields}) = mpSQLLoop($dbh, ${mpsql})-->
+	<!--MPFUNCTION: (${status},${rows},${sth},${fields}) = mpSQLLoop($dbh, "Select ")-->
 	<!--MPLOOP: (@{${rows}}) + $dbh-->
 		<!--MPVAR: temp_array = ${f1}-->
 			<!--MPVAR: row_href = {}-->
@@ -21,7 +21,7 @@
 		<!--MPENDLOOP-->
 		<!--MPFUNCTION: push(@{${json_href}->{'rows'}}, ${row_href})-->
 	<!--MPENDLOOP-->
-	<!--MPFUNCTION: mpSQL("SELECT testing FROM sqlinjection ") -->
+	<!--MPFUNCTION: mpSQL("SELECT testing, help, love FROM sqlinjection WHERE ") -->
 <!--MPENDBLOCK: __FILE__-->
 /*p>Hello</p>*/
 <script source="text/javascript">
