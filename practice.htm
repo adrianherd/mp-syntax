@@ -5,13 +5,12 @@
 	<!--MPVAR: json_href = {}-->
 	<!--MPFUNCTION: ${json_href}->{'rows'} = []-->
 	<!--MPFUNCTION: ${json_href}->{'total'} = mpPageCount($dbh, ${mpsql}, [], 1)-->
-	<!--MPVAR: mpsql = (defined(${offset}) && defined(${limit})) ? ${mpsql} . " LIMIT " . ${offset} . ", " . "${limit}" : ${mpsql}-->
+	<!--MPVAR: mpsql = (defined(${offset}) && defined(${limit})) ? ${mpsql} . " LIMIT " . ${offset} . ", " . "${limit} " : ${mpsql}-->
 	<!--MPVAR: mpsql_expanded = mpExpandSQL(${mpsql}, [])-->
 	<!--MPIF: ${DEBUG}-->
 		<!--MPFUNCTION: ${json_href}->{'mpsql'} = ${mpsql_expanded}-->
 		<!--MPFUNCTION: ${json_href}->{'mpsql_temp_table'} = ${mpsql_temp_table_expanded}-->
 	<!--MPENDIF-->
-
 	<!--MPFUNCTION: (${status},${rows},${sth},${fields}) = mpSQLLoop($dbh, "Select ")-->
 	<!--MPLOOP: (@{${rows}}) + $dbh-->
 		<!--MPVAR: temp_array = ${f1}-->
@@ -25,5 +24,6 @@
 <!--MPENDBLOCK: __FILE__-->
 /*p>Hello</p>*/
 <script source="text/javascript">
+`dfgdf dgfsd gfsd ds ${extra + neva + 3}`
 </script>
 
