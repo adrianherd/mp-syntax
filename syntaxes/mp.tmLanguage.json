@@ -10,7 +10,7 @@
 			"comment": "TODO: handle mpvar inner contents"
 		},
 		{
-			"comment": "TODO: handle mpclose , probz want different highlighting, parameter name?"
+			"comment": "TODO: handle mpendblock , probz want different highlighting, parameter name?"
 		},
 		{
 			"comment": "TODO: handle mpinclude, highlight that filename better"
