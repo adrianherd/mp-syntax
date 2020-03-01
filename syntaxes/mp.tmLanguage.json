@@ -7,9 +7,6 @@
 			"include": "#comment"
 		},
 		{
-			"comment": "TODO: handle mpvar inner contents"
-		},
-		{
 			"comment": "TODO: handle mpendblock , probz want different highlighting, parameter name?"
 		},
 		{
@@ -22,9 +19,11 @@
 			"include": "#mp-statement"
 		},
 		{
+			"comment": "[${a} == 1|<p>something</p>|<li>something else</li>]",
 			"include": "#mp-conditional-block"
 		},
 		{
+			"comment": "~mpSQL(...)~ ",
 			"include": "#mp-template-output"
 		},
 		{
@@ -32,6 +31,10 @@
 		},
 		{
 			"include": "text.html.basic"
+		},
+		{
+			"comment": "catch strings in the wild. mainly the strings between MPVAR/MPENDVAR",
+			"include": "#string"
 		}
 	],
 	"repository": {
@@ -149,8 +152,10 @@
 		},
 		"string": {
 			"patterns": [
+				{"include": "#sql-string-perl-qq"},
 				{"include": "#sql-string-single-quoted"},
 				{"include": "#sql-string-double-quoted"},
+				{"include": "#string-perl-qq"},
 				{"include": "#string-single-quoted"},
 				{"include": "#string-double-quoted"}
 			]
@@ -171,6 +176,7 @@
 			},
 			"name": "string.quoted.other.qq.mp",
 			"patterns": [
+				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"},
 				{"include": "source.sql"}
 			]

@@ -3,7 +3,7 @@
     "displayName": "MP",
     "description": "MP syntax highlighting",
     "version": "0.0.1",
-    "publisher": "ahernandez",
+    "publisher": "AdrianHernandez",
     "engines": {
         "vscode": "^1.42.0"
     },
