@@ -24,7 +24,7 @@ Perl syntax embedded in MP are not yet highlighted correctly.
 
 Initial release. Control operators in MP and javastyle comments are highlighted correctly.
 
-### 1.0.0
+### 0.0.2
 
 Initial release of MP-syntax
 
