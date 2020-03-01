@@ -22,13 +22,34 @@
 			"include": "#mp-statement"
 		},
 		{
-			"comment": "TODO: catch conditional square brackets [] used by mp"
+			"comment": "TODO: catch conditional square brackets [] used by mp",
+			"begin": "\\[(([^\\|]|\\s)*)\\|",
+			"beginCaptures": {
+				"1": {
+					"name": "first.half",
+					"patterns": [
+						{"include":"#mp-conditional-logical-operators"},
+						{"include":"#mod-perl"}
+					]
+				}
+			},
+			"end": "\\]",
+			"patterns": [
+				{"include":"#variable-enclosed"},
+				{"include":"text.html.basic"}
+			]
+
 		},
 		{
-			"comment": "TODO: catch tilda mp print outs ~mpSQL()~"
+			"comment": "TODO: catch tilda mp print outs ~mpSQL()~",
+			"begin": "\\~",
+			"end": "\\~",
+			"patterns": [
+				{"include": "#mod-perl"}
+			]
 		},
 		{
-			"comment": "catch old style MP langauge (UWE code)"
+			"comment": "catch UWE code"
 		},
 		{
 			"include": "text.html.basic"
@@ -312,6 +333,10 @@
 		},
 		"mp-accessors": {
 			"comment": "TODO: capture -> for variables, maybe ${} and @{} syntax as well"
+		},
+		"mp-conditional-logical-operators": {
+			"match": "(?i)(and|or)",
+			"name": "keyword.operator.mp"
 		}
 	}
 }
