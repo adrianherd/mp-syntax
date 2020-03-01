@@ -2,7 +2,7 @@
     "name": "mp",
     "displayName": "MP",
     "description": "MP syntax highlighting",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "AdrianHernandez",
     "engines": {
         "vscode": "^1.42.0"
@@ -15,27 +15,28 @@
     },
     "contributes": {
         "languages": [
-			{
+            {
                 "id": "mp",
                 "extensions": [
-                    ".htm","html"
+                    ".htm",
+                    "html"
                 ],
-				"aliases": [
-					"MP",
-					"mp"
-				],
-				"mimetypes": [
-					"application/x-mp"
-				],
+                "aliases": [
+                    "MP",
+                    "mp"
+                ],
+                "mimetypes": [
+                    "application/x-mp"
+                ],
                 "configuration": "./language-configuration.json"
             }
         ],
         "grammars": [
-			{
+            {
                 "language": "mp",
-				"scopeName": "source.mp",
+                "scopeName": "source.mp",
                 "path": "./syntaxes/mp.tmLanguage.json"
-			}
+            }
         ]
     }
 }
