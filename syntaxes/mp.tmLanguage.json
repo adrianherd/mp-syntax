@@ -22,31 +22,10 @@
 			"include": "#mp-statement"
 		},
 		{
-			"comment": "TODO: catch conditional square brackets [] used by mp",
-			"begin": "\\[(([^\\|]|\\s)*)\\|",
-			"beginCaptures": {
-				"1": {
-					"name": "first.half",
-					"patterns": [
-						{"include":"#mp-conditional-logical-operators"},
-						{"include":"#mod-perl"}
-					]
-				}
-			},
-			"end": "\\]",
-			"patterns": [
-				{"include":"#variable-enclosed"},
-				{"include":"text.html.basic"}
-			]
-
+			"include": "#mp-conditional-block"
 		},
 		{
-			"comment": "TODO: catch tilda mp print outs ~mpSQL()~",
-			"begin": "\\~",
-			"end": "\\~",
-			"patterns": [
-				{"include": "#mod-perl"}
-			]
+			"include": "#mp-template-output"
 		},
 		{
 			"comment": "catch UWE code"
@@ -337,6 +316,37 @@
 		"mp-conditional-logical-operators": {
 			"match": "(?i)(and|or)",
 			"name": "keyword.operator.mp"
+		},
+		"mp-conditional-block": {
+			"begin": "\\[",
+			"end": "\\]",
+			"patterns": [
+				{"include": "#mp-conditional-block-logic"},
+				{"include": "#mp-conditional-block-output"}
+			]
+		},
+		"mp-conditional-block-logic": {
+			"begin": "(?<=\\[)",
+			"end": "\\|+?",
+			"patterns": [
+				{"include": "#mp-conditional-logical-operators"},
+				{"include": "#mod-perl"}
+			]
+		},
+		"mp-conditional-block-output": {
+			"begin": "(\\||(?<=\\|))",
+			"end": "(?=\\])",
+			"patterns":[
+				{"include":"#variables"},
+				{"include":"text.html.basic"}
+			]
+		},
+		"mp-template-output": {
+			"begin": "\\~",
+			"end": "\\~",
+			"patterns": [
+				{"include": "#mod-perl"}
+			]
 		}
 	}
 }
