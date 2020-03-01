@@ -162,7 +162,7 @@
 		},
 		"sql-string-perl-qq": {
 			"comment": "Ignore case for SQL starts",
-			"begin": "qq\\s*([^\\(\\{\\[\\<\\w\\s])\\s*(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"begin": "qq\\s*([^\\(\\{\\[\\<\\w\\s])[\\s|\\n]*(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
 			"beginCaptures": {
 			  "0": {
 				"name": "punctuation.definition.string.begin.mp"
@@ -202,7 +202,7 @@
 			]
 		},
 		"sql-string-double-quoted": {
-            "begin": "(?i)\"\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
+            "begin": "(?i)\"[\\s|\\n]*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
             "beginCaptures": {
                 "0": {
                     "name": "punctuation.definition.string.begin.mp"
@@ -223,7 +223,7 @@
             ]
         },
         "sql-string-single-quoted": {
-            "begin": "(?i)'\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
+            "begin": "(?i)'[\\s|\\n]*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
             "beginCaptures": {
                 "0": {
                     "name": "punctuation.definition.string.begin.mp"
