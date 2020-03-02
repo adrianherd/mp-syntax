@@ -16,28 +16,13 @@
 			"include": "#variable-enclosed"
 		},
 		{
-			"include": "#mp-var-block"
-		},
-		{
-			"include": "#mp-statement"
-		},
-		{
-			"comment": "[${a} == 1|<p>something</p>|<li>something else</li>]",
-			"include": "#mp-conditional-block"
-		},
-		{
-			"comment": "~mpSQL(...)~ ",
-			"include": "#mp-template-output"
+			"include": "#mp"
 		},
 		{
 			"comment": "catch UWE code"
 		},
 		{
 			"include": "text.html.basic"
-		},
-		{
-			"comment": "catch strings in the wild. mainly the strings between MPVAR/MPENDVAR",
-			"include": "#string"
 		}
 	],
 	"repository": {
@@ -48,6 +33,29 @@
 					"end": "\\*/",
 					"name": "comment.block.mp"
 				}
+			]
+		},
+		"mp": {
+			"patterns": [
+				{"include": "#mp-blocks"},
+				{"include": "#mp-statement"},
+				{
+					"comment": "[${a} == 1|<p>something</p>|<li>something else</li>]",
+					"include": "#mp-conditional-block"
+				},
+				{
+					"comment": "~mpSQL(...)~ ",
+					"include": "#mp-template-output"
+				}
+			]
+		},
+		"mp-blocks": {
+			"patterns": [
+				{"include": "#mp-block-block"},
+				{"include": "#mp-var-block"},
+				{"include": "#mp-if-block"},
+				{"include": "#mp-else-block"},
+				{"include": "#mp-loop-block"}
 			]
 		},
 		"mp-var-block": {
@@ -70,7 +78,95 @@
 			"patterns": [
 				{"include": "#variable-enclosed"},
 				{"include": "#sql-string-perl-qq"},
-				{"include": "#string"}
+				{"include": "#string"},
+				{
+					"match": "\\.",
+					"name": "keyword.operator.concat"
+				}
+			]
+		},
+		"mp-block-block": {
+			"begin": "(<!--\\s*MPBLOCK\\s*:.*-->)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"end": "(<!--\\s*MPENDBLOCK\\s*:.*-->)",
+			"endCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"patterns": [
+				{"include": "$self"}
+			]
+		},
+		"mp-loop-block": {
+			"begin": "(<!--\\s*MPLOOP\\s*:.*-->)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"end": "(<!--\\s*MPENDLOOP\\s*-->)",
+			"endCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"patterns": [
+				{"include": "$self"}
+			]
+		},
+		"mp-if-block": {
+			"begin": "(<!--\\s*(MPIF|MPELSEIF)\\s*:.*-->)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"end": "(<!--\\s*(MPENDIF\\s*|MPELSEIF\\s*:.*|MPELSE\\s*)-->)",
+			"endCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"patterns": [
+				{"include": "$self"}
+			]
+		},
+		"mp-else-block": {
+			"begin": "(<!--\\s*MPELSE\\s*-->)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"end": "(<!--\\s*MPENDIF\\s*-->)",
+			"endCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"patterns": [
+				{"include": "$self"}
 			]
 		},
 		"mp-statement": {
@@ -296,38 +392,6 @@
 				{"include": "source.sql"}
 			]
 		},
-		"regex": {
-			"patterns": [
-				{
-					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
-					"name": "string.regexp"
-				}
-			]
-		},
-		"mp-control": {
-			"patterns": [{
-				"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE|MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
-				"name": "keyword.control.mp"				
-			}]
-		},
-		"mp-control-open": {
-			"patterns": [{
-				"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE)",
-				"name": "keyword.control.mp"
-			}]
-		},
-		"mp-control-end": {
-			"patterns": [{
-				"match": "(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
-				"name": "keyword.control.mp"
-			}]
-		},
-		"mp-operators": {
-			"comment": "TODO: get all operators matched here, - + && || % etc"
-		},
-		"mp-accessors": {
-			"comment": "TODO: capture -> for variables, maybe ${} and @{} syntax as well"
-		},
 		"mp-conditional-block": {
 			"begin": "\\[",
 			"end": "\\]",
@@ -340,12 +404,17 @@
 			"begin": "(?<=\\[)",
 			"end": "\\|+?",
 			"patterns": [
-				{"include": "#mp-conditional-logical-operator"},
-				{"include": "#mod-perl"}
+				{"include": "#mp-conditional-logical-operator-word"},
+				{"include": "#mod-perl"},
+				{"include": "#mp-conditional-logical-operator-symbol"}
 			]
 		},
-		"mp-conditional-logical-operator": {
-			"match": "(?i)\\b(and|or)\\b",
+		"mp-conditional-logical-operator-word": {
+			"match": "(?i)\\b(and|or|ne|eq)\\b",
+			"name": "keyword.operator.mp"
+		},
+		"mp-conditional-logical-operator-symbol": {
+			"match": "(&&|!|==|!=|%|/|\\*|-|\\+)",
 			"name": "keyword.operator.mp"
 		},
 		"mp-conditional-block-output": {
@@ -362,6 +431,38 @@
 			"patterns": [
 				{"include": "#mod-perl"}
 			]
+		},
+		"regex": {
+			"patterns": [
+				{
+					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
+					"name": "string.regexp"
+				}
+			]
+		},
+		"mp-control": {
+			"patterns": [{
+				"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE|MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
+				"name": "keyword.control.mp"				
+			}]
+		},
+		"mp-control-open": {
+			"patterns": [{
+				"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK)",
+				"name": "keyword.control.mp"
+			}]
+		},
+		"mp-control-end": {
+			"patterns": [{
+				"match": "(MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
+				"name": "keyword.control.mp"
+			}]
+		},
+		"mp-operators": {
+			"comment": "TODO: get all operators matched here, - + && || % etc"
+		},
+		"mp-accessors": {
+			"comment": "TODO: capture -> for variables, maybe ${} and @{} syntax as well"
 		},
 		"escape-characters": {
 			"patterns": [
