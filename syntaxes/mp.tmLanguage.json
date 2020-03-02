@@ -149,10 +149,9 @@
 				"end": "\"",
 				"name": "string.quoted.double.mp",
 				"patterns": [
-					{"include": "#escape-characters"},
 					{"include": "#sql-injection"},
-					{"include": "#variable-enclosed"}
-					
+					{"include": "#variable-enclosed"},
+					{"include": "#escape-characters"}
 				]
 			}]
 		},
@@ -164,8 +163,8 @@
 			]
 		},
 		"sql-injection": {
-			"begin": "(^|(?<=(\"|')))\\s*(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
-			"end": "(?=\\k<0-2>)",
+			"begin": "(^\\s*|(?<=\"|'|qq(\\w))\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\"|')",
 			"patterns": [
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"},
