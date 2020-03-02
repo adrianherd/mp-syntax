@@ -16,6 +16,9 @@
 			"include": "#variable-enclosed"
 		},
 		{
+			"include": "#mp-var-block"
+		},
+		{
 			"include": "#mp-statement"
 		},
 		{
@@ -45,6 +48,29 @@
 					"end": "\\*/",
 					"name": "comment.block.mp"
 				}
+			]
+		},
+		"mp-var-block": {
+			"begin": "(<!--\\s*MPVAR\\s*:[^=]*-->)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"end": "(<!--\\s*MPENDVAR\\s*-->)",
+			"endCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"patterns": [
+				{"include": "#variable-enclosed"},
+				{"include": "#sql-string-perl-qq"},
+				{"include": "#string"}
 			]
 		},
 		"mp-statement": {
@@ -164,7 +190,6 @@
 		},
 		"string": {
 			"patterns": [
-				{"include": "#sql-string-perl-qq"},
 				{"include": "#string-perl-qq"},
 				{"include": "#string-single-quoted"},
 				{"include": "#string-double-quoted"}
@@ -246,6 +271,26 @@
 					"comment": "without this, source.sql breaks everything thinking a new string is started",
 					"match": "(\"|')"
 				},
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
+		"sql-string-perl-qq": {
+			"begin": "qq([^\\(\\{\\[\\<\\w])",
+			"beginCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.begin.mp"
+			  }
+			},
+			"end": "\\1",
+			"endCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.end.mp"
+			  }
+			},
+			"name": "string.quoted.other.qq.mp",
+			"patterns": [
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"},
 				{"include": "source.sql"}
