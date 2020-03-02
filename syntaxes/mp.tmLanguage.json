@@ -219,7 +219,7 @@
 			]
 		},
 		"string-perl-qq": {
-			"begin": "qq([^\\(\\{\\[\\<\\w\\s])",
+			"begin": "qq([^\\(\\{\\[\\<\\w])",
 			"beginCaptures": {
 			  "0": {
 				"name": "punctuation.definition.string.begin.mp"
@@ -233,28 +233,16 @@
 			},
 			"name": "string.quoted.other.qq.mp",
 			"patterns": [
-				{"include": "#sql-injection"},
+				{"include": "#sql-injection-qq"},
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"}
 			]
 		},
-		"sql-string-perl-qq": {
-			"comment": "Ignore case for SQL starts",
-			"begin": "qq([^\\(\\{\\[\\<\\w\\s])(\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
-			"beginCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.begin.mp"
-			  }
-			},
-			"end": "\\1",
-			"endCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.end.mp"
-			  }
-			},
-			"name": "string.quoted.other.qq.mp",
+		"sql-injection-qq": {
+			"begin": "(?<=qq([^\\(\\{\\[\\<\\w])\\G)\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY))",
+			"end": "(?=\\1)",
 			"patterns": [
-				{
+				{	
 					"comment": "without this, source.sql breaks everything thinking a new string is started",
 					"match": "(\"|')"
 				},
