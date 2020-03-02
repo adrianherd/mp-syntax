@@ -138,8 +138,8 @@
 					"end": "'",
 					"name": "string.quoted.single.mp",
 					"patterns": [
-						{"include": "#sql-injection"},
-						{"include": "#escape-characters"}
+						{"include": "#escape-characters"},
+						{"include": "#sql-injection-single"}
 					]
 			}]
 		},
@@ -149,31 +149,50 @@
 				"end": "\"",
 				"name": "string.quoted.double.mp",
 				"patterns": [
-					{"include": "#sql-injection"},
-					{"include": "#variable-enclosed"},
-					{"include": "#escape-characters"}
+					{"include": "#escape-characters"},
+					{"include": "#sql-injection-double"},
+					{"include": "#variable-enclosed"}
 				]
 			}]
 		},
 		"string": {
 			"patterns": [
+				{"include": "#sql-string-perl-qq"},
 				{"include": "#string-perl-qq"},
 				{"include": "#string-single-quoted"},
 				{"include": "#string-double-quoted"}
 			]
 		},
-		"sql-injection": {
-			"begin": "(^\\s*|(?<=\"|'|qq(\\w))\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
-			"end": "(?=\"|')",
+		"sql-injection-double": {
+			"begin": "(^\\s*|(?<=\")\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\")",
 			"patterns": [
+				{	
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "'",
+					"name": "string.quoted.double.mp"
+				},
 				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
+		"sql-injection-single": {
+			"begin": "(^\\s*|(?<=')\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\\')",
+			"patterns": [
+				{	
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "\"",
+					"name": "string.quoted.single.mp"
+				},
 				{"include": "#escape-characters"},
 				{"include": "source.sql"}
 			]
 		},
 		"string-perl-qq": {
 			"comment": "Ignore case for SQL starts",
-			"begin": "qq\\s*([^\\(\\{\\[\\<\\w\\s])",
+			"begin": "qq([^\\(\\{\\[\\<\\w\\s])",
 			"beginCaptures": {
 			  "0": {
 				"name": "punctuation.definition.string.begin.mp"
@@ -190,6 +209,27 @@
 				{"include": "#sql-injection"},
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"}
+			]
+		},
+		"sql-string-perl-qq": {
+			"comment": "Ignore case for SQL starts",
+			"begin": "qq([^\\(\\{\\[\\<\\w\\s])(\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"beginCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.begin.mp"
+			  }
+			},
+			"end": "\\1",
+			"endCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.end.mp"
+			  }
+			},
+			"name": "string.quoted.other.qq.mp",
+			"patterns": [
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
 			]
 		},
 		"regex": {
