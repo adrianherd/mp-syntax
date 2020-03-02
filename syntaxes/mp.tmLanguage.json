@@ -75,7 +75,7 @@
 					"include": "#string"
 				},
 				{
-					"include": "#mp-controls"
+					"include": "#mp-control"
 				},
 				{
 					"include": "#function"
@@ -121,15 +121,53 @@
 		},
 		"variable": {
 			"patterns": [
-				{
-					"include": "#variable-enclosed"
-				},
-				{
-					"include": "#variable-perl"
-				},
-				{
-					"include": "#variable-bareword"
+				{"include": "#variable-enclosed"},
+				{"include": "#variable-perl"},
+				{"include": "#variable-bareword"}
+			]
+		},
+		"variable-enclosed": {
+			"patterns": [{
+				"match": "(\\$\\{)(\\w+)(\\})",
+				"captures": {
+					"1": {
+						"name": "punctuation.definition.variable.mp"
+					},
+					"2": {
+						"name": "storage.type.var.mp"
+					},
+					"3": {
+						"name": "punctuation.definition.variable.mp"
+					}
 				}
+			}]
+		},
+		"variable-perl": {
+			"patterns": [{
+				"match": "(\\$\\w+)",
+				"captures": {
+					"1": {
+						"name": "storage.type.var.mp"
+					}
+				}
+			}]
+		},
+		"variable-bareword": {
+			"patterns": [{
+				"match": "(\\w+)",
+				"captures": {
+					"1": {
+						"name": "storage.type.var.mp"
+					}
+				}
+			}]
+		},
+		"string": {
+			"patterns": [
+				{"include": "#sql-string-perl-qq"},
+				{"include": "#string-perl-qq"},
+				{"include": "#string-single-quoted"},
+				{"include": "#string-double-quoted"}
 			]
 		},
 		"string-single-quoted": {
@@ -143,6 +181,18 @@
 					]
 			}]
 		},
+		"sql-injection-single": {
+			"begin": "(^\\s*|(?<=')\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\\')",
+			"patterns": [
+				{	
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "\""
+				},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
 		"string-double-quoted": {
 			"patterns": [{
 				"begin": "\"",
@@ -155,43 +205,20 @@
 				]
 			}]
 		},
-		"string": {
-			"patterns": [
-				{"include": "#sql-string-perl-qq"},
-				{"include": "#string-perl-qq"},
-				{"include": "#string-single-quoted"},
-				{"include": "#string-double-quoted"}
-			]
-		},
 		"sql-injection-double": {
 			"begin": "(^\\s*|(?<=\")\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
 			"end": "(?=\")",
 			"patterns": [
 				{	
 					"comment": "without this, source.sql breaks everything thinking a new string is started",
-					"match": "'",
-					"name": "string.quoted.double.mp"
+					"match": "'"
 				},
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"},
 				{"include": "source.sql"}
 			]
 		},
-		"sql-injection-single": {
-			"begin": "(^\\s*|(?<=')\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
-			"end": "(?=\\')",
-			"patterns": [
-				{	
-					"comment": "without this, source.sql breaks everything thinking a new string is started",
-					"match": "\"",
-					"name": "string.quoted.single.mp"
-				},
-				{"include": "#escape-characters"},
-				{"include": "source.sql"}
-			]
-		},
 		"string-perl-qq": {
-			"comment": "Ignore case for SQL starts",
 			"begin": "qq([^\\(\\{\\[\\<\\w\\s])",
 			"beginCaptures": {
 			  "0": {
@@ -227,6 +254,10 @@
 			},
 			"name": "string.quoted.other.qq.mp",
 			"patterns": [
+				{
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "(\"|')"
+				},
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"},
 				{"include": "source.sql"}
@@ -240,52 +271,7 @@
 				}
 			]
 		},
-		"escape-characters": {
-			"patterns": [
-				{
-					"comment": "This captures a lot of escape characters. Copied from js syntax",
-					"name": "constant.character.escape.mp",
-					"match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
-				}
-			]
-		},
-		"variable-bareword": {
-			"patterns": [{
-				"match": "(\\w+)",
-				"captures": {
-					"1": {
-						"name": "storage.type.var.mp"
-					}
-				}
-			}]
-		},
-		"variable-perl": {
-			"patterns": [{
-				"match": "(\\$\\w+)",
-				"captures": {
-					"1": {
-						"name": "storage.type.var.mp"
-					}
-				}
-			}]
-		},
-		"variable-enclosed": {
-			"patterns": [{
-				"match": "(\\$\\{)(\\w+)(\\})",
-				"captures": {
-					"1": {
-						"name": "punctuation.definition.variable.mp"
-					},
-					"2": {
-						"name": "storage.type.var.mp"
-					},
-					"3": {
-						"name": "punctuation.definition.variable.mp"
-					}
-				}
-			}]
-		},
-		"mp-controls": {
+		"mp-control": {
 			"patterns": [{
 				"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE|MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
 				"name": "keyword.control.mp"				
@@ -309,10 +295,6 @@
 		"mp-accessors": {
 			"comment": "TODO: capture -> for variables, maybe ${} and @{} syntax as well"
 		},
-		"mp-conditional-logical-operators": {
-			"match": "(?i)(and|or)",
-			"name": "keyword.operator.mp"
-		},
 		"mp-conditional-block": {
 			"begin": "\\[",
 			"end": "\\]",
@@ -325,15 +307,19 @@
 			"begin": "(?<=\\[)",
 			"end": "\\|+?",
 			"patterns": [
-				{"include": "#mp-conditional-logical-operators"},
+				{"include": "#mp-conditional-logical-operator"},
 				{"include": "#mod-perl"}
 			]
+		},
+		"mp-conditional-logical-operator": {
+			"match": "(?i)\\b(and|or)\\b",
+			"name": "keyword.operator.mp"
 		},
 		"mp-conditional-block-output": {
 			"begin": "(\\||(?<=\\|))",
 			"end": "(?=\\])",
 			"patterns":[
-				{"include":"#variables"},
+				{"include":"#variable-enclosed"},
 				{"include":"text.html.basic"}
 			]
 		},
@@ -342,6 +328,15 @@
 			"end": "\\~",
 			"patterns": [
 				{"include": "#mod-perl"}
+			]
+		},
+		"escape-characters": {
+			"patterns": [
+				{
+					"comment": "This captures a lot of escape characters. Copied from js syntax",
+					"name": "constant.character.escape.mp",
+					"match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+				}
 			]
 		}
 	}
