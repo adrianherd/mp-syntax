@@ -2,7 +2,7 @@
     "name": "mp",
     "displayName": "MP",
     "description": "MP syntax highlighting",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "publisher": "AdrianHernandez",
     "engines": {
         "vscode": "^1.42.0"
