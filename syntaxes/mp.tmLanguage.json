@@ -393,7 +393,7 @@
 			]
 		},
 		"mp-conditional-block": {
-			"begin": "(<[^<]*)?(\\[(?=[^\\|]*\\|))",
+			"begin": "(<[^<]*)?\\[(?=[^\\|]*\\|)",
 			"beginCaptures": {
 				"1": {
 					"patterns": [
@@ -432,11 +432,10 @@
 			"name": "keyword.operator.mp"
 		},
 		"mp-conditional-block-output": {
-			"begin": "(\\||(?<=\\|))",
-			"end": "(?=\\])",
+			"begin": "(?<=\\|)\\G",
+			"end": "((?=\\])|\\|)",
 			"patterns":[
-				{"include":"#variable-enclosed"},
-				{"include":"text.html.basic"}
+				{"include":"#variable-enclosed"}
 			]
 		},
 		"mp-template-output": {
