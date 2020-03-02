@@ -16,6 +16,9 @@
 			"include": "#variable-enclosed"
 		},
 		{
+			"include": "#mp-var-block"
+		},
+		{
 			"include": "#mp-statement"
 		},
 		{
@@ -47,6 +50,29 @@
 				}
 			]
 		},
+		"mp-var-block": {
+			"begin": "(<!--\\s*MPVAR\\s*:[^=]*-->)",
+			"beginCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"end": "(<!--\\s*MPENDVAR\\s*-->)",
+			"endCaptures": {
+				"0": {
+					"patterns": [
+						{"include": "#mp-statement"}
+					]
+				}
+			},
+			"patterns": [
+				{"include": "#variable-enclosed"},
+				{"include": "#sql-string-perl-qq"},
+				{"include": "#string"}
+			]
+		},
 		"mp-statement": {
 			"begin": "(<!--)",
 			"beginCaptures": {
@@ -75,7 +101,7 @@
 					"include": "#string"
 				},
 				{
-					"include": "#mp-controls"
+					"include": "#mp-control"
 				},
 				{
 					"include": "#function"
@@ -121,163 +147,10 @@
 		},
 		"variable": {
 			"patterns": [
-				{
-					"include": "#variable-enclosed"
-				},
-				{
-					"include": "#variable-perl"
-				},
-				{
-					"include": "#variable-bareword"
-				}
-			]
-		},
-		"string-single-quoted": {
-			"patterns": [{
-					"begin": "'",
-					"end": "'",
-					"name": "string.quoted.single.mp"
-			}]
-		},
-		"string-double-quoted": {
-			"patterns": [{
-				"begin": "\"",
-				"end": "\"",
-				"name": "string.quoted.double.mp",
-				"patterns": [
-					{"include": "#variable-enclosed"},
-					{"include": "#escape-characters"}
-				]
-			}]
-		},
-		"string": {
-			"patterns": [
-				{"include": "#sql-string-perl-qq"},
-				{"include": "#sql-string-single-quoted"},
-				{"include": "#sql-string-double-quoted"},
-				{"include": "#string-perl-qq"},
-				{"include": "#string-single-quoted"},
-				{"include": "#string-double-quoted"}
-			]
-		},
-		"sql-string-perl-qq": {
-			"comment": "Ignore case for SQL starts",
-			"begin": "qq\\s*([^\\(\\{\\[\\<\\w\\s])[\\s|\\n]*(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
-			"beginCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.begin.mp"
-			  }
-			},
-			"end": "\\1",
-			"endCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.end.mp"
-			  }
-			},
-			"name": "string.quoted.other.qq.mp",
-			"patterns": [
 				{"include": "#variable-enclosed"},
-				{"include": "#escape-characters"},
-				{"include": "source.sql"}
+				{"include": "#variable-perl"},
+				{"include": "#variable-bareword"}
 			]
-		},
-		"string-perl-qq": {
-			"comment": "Ignore case for SQL starts",
-			"begin": "qq\\s*([^\\(\\{\\[\\<\\w\\s])",
-			"beginCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.begin.mp"
-			  }
-			},
-			"end": "\\1",
-			"endCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.end.mp"
-			  }
-			},
-			"name": "string.quoted.other.qq.mp",
-			"patterns": [
-				{"include": "#escape-characters"},
-				{"include": "source.sql"}
-			]
-		},
-		"sql-string-double-quoted": {
-            "begin": "(?i)\"[\\s|\\n]*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
-            "beginCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.begin.mp"
-                }
-            },
-            "contentName": "source.sql.embedded.mp",
-            "end": "\"",
-            "endCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.end.mp"
-                }
-            },
-            "name": "string.quoted.double.sql.mp",
-            "patterns": [
-				{"include": "#variable-enclosed"},
-				{"include": "#escape-characters"},
-				{"include": "source.sql"}
-            ]
-        },
-        "sql-string-single-quoted": {
-            "begin": "(?i)'[\\s|\\n]*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
-            "beginCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.begin.mp"
-                }
-            },
-            "contentName": "source.sql.embedded.mp",
-            "end": "'",
-            "endCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.end.mp"
-                }
-            },
-            "name": "string.quoted.single.sql.mp",
-            "patterns": [
-                {"include": "source.sql"},
-				{"include": "#escape-characters"}
-            ]
-        },
-		"regex": {
-			"patterns": [
-				{
-					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
-					"name": "string.regexp"
-				}
-			]
-		},
-		"escape-characters": {
-			"patterns": [
-				{
-					"comment": "This captures a lot of escape characters. Copied from js syntax",
-					"name": "constant.character.escape.mp",
-					"match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
-				}
-			]
-		},
-		"variable-bareword": {
-			"patterns": [{
-				"match": "(\\w+)",
-				"captures": {
-					"1": {
-						"name": "storage.type.var.mp"
-					}
-				}
-			}]
-		},
-		"variable-perl": {
-			"patterns": [{
-				"match": "(\\$\\w+)",
-				"captures": {
-					"1": {
-						"name": "storage.type.var.mp"
-					}
-				}
-			}]
 		},
 		"variable-enclosed": {
 			"patterns": [{
@@ -295,7 +168,143 @@
 				}
 			}]
 		},
-		"mp-controls": {
+		"variable-perl": {
+			"patterns": [{
+				"match": "(\\$\\w+)",
+				"captures": {
+					"1": {
+						"name": "storage.type.var.mp"
+					}
+				}
+			}]
+		},
+		"variable-bareword": {
+			"patterns": [{
+				"match": "(\\w+)",
+				"captures": {
+					"1": {
+						"name": "storage.type.var.mp"
+					}
+				}
+			}]
+		},
+		"string": {
+			"patterns": [
+				{"include": "#string-perl-qq"},
+				{"include": "#string-single-quoted"},
+				{"include": "#string-double-quoted"}
+			]
+		},
+		"string-single-quoted": {
+			"patterns": [{
+					"begin": "'",
+					"end": "'",
+					"name": "string.quoted.single.mp",
+					"patterns": [
+						{"include": "#escape-characters"},
+						{"include": "#sql-injection-single"}
+					]
+			}]
+		},
+		"sql-injection-single": {
+			"begin": "(^\\s*|(?<=')\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\\')",
+			"patterns": [
+				{	
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "\""
+				},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
+		"string-double-quoted": {
+			"patterns": [{
+				"begin": "\"",
+				"end": "\"",
+				"name": "string.quoted.double.mp",
+				"patterns": [
+					{"include": "#escape-characters"},
+					{"include": "#sql-injection-double"},
+					{"include": "#variable-enclosed"}
+				]
+			}]
+		},
+		"sql-injection-double": {
+			"begin": "(^\\s*|(?<=\")\\s*)(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\")",
+			"patterns": [
+				{	
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "'"
+				},
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
+		"string-perl-qq": {
+			"begin": "qq([^\\(\\{\\[\\<\\w])",
+			"beginCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.begin.mp"
+			  }
+			},
+			"end": "\\1",
+			"endCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.end.mp"
+			  }
+			},
+			"name": "string.quoted.other.qq.mp",
+			"patterns": [
+				{"include": "#sql-injection-qq"},
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"}
+			]
+		},
+		"sql-injection-qq": {
+			"begin": "(?<=qq([^\\(\\{\\[\\<\\w])\\G)\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY))",
+			"end": "(?=\\1)",
+			"patterns": [
+				{	
+					"comment": "without this, source.sql breaks everything thinking a new string is started",
+					"match": "(\"|')"
+				},
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
+		"sql-string-perl-qq": {
+			"begin": "qq([^\\(\\{\\[\\<\\w])",
+			"beginCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.begin.mp"
+			  }
+			},
+			"end": "\\1",
+			"endCaptures": {
+			  "0": {
+				"name": "punctuation.definition.string.end.mp"
+			  }
+			},
+			"name": "string.quoted.other.qq.mp",
+			"patterns": [
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"},
+				{"include": "source.sql"}
+			]
+		},
+		"regex": {
+			"patterns": [
+				{
+					"match": "[a-zA-Z]?/.*/?.*?/[a-zA-Z]?",
+					"name": "string.regexp"
+				}
+			]
+		},
+		"mp-control": {
 			"patterns": [{
 				"match": "(MPIF|MPELSEIF|MPELSE|MPLOOP|MPVAR|MPBLOCK|MPFUNCTION|MPLIB|MPINIT|MPBREAK|\\$INCLUDE|MPENDIF|MPENDLOOP|MPENDVAR|MPENDBLOCK)",
 				"name": "keyword.control.mp"				
@@ -319,10 +328,6 @@
 		"mp-accessors": {
 			"comment": "TODO: capture -> for variables, maybe ${} and @{} syntax as well"
 		},
-		"mp-conditional-logical-operators": {
-			"match": "(?i)(and|or)",
-			"name": "keyword.operator.mp"
-		},
 		"mp-conditional-block": {
 			"begin": "\\[",
 			"end": "\\]",
@@ -335,15 +340,19 @@
 			"begin": "(?<=\\[)",
 			"end": "\\|+?",
 			"patterns": [
-				{"include": "#mp-conditional-logical-operators"},
+				{"include": "#mp-conditional-logical-operator"},
 				{"include": "#mod-perl"}
 			]
+		},
+		"mp-conditional-logical-operator": {
+			"match": "(?i)\\b(and|or)\\b",
+			"name": "keyword.operator.mp"
 		},
 		"mp-conditional-block-output": {
 			"begin": "(\\||(?<=\\|))",
 			"end": "(?=\\])",
 			"patterns":[
-				{"include":"#variables"},
+				{"include":"#variable-enclosed"},
 				{"include":"text.html.basic"}
 			]
 		},
@@ -352,6 +361,15 @@
 			"end": "\\~",
 			"patterns": [
 				{"include": "#mod-perl"}
+			]
+		},
+		"escape-characters": {
+			"patterns": [
+				{
+					"comment": "This captures a lot of escape characters. Copied from js syntax",
+					"name": "constant.character.escape.mp",
+					"match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+				}
 			]
 		}
 	}
