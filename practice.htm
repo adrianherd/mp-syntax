@@ -39,3 +39,73 @@ qq~ SELECT  ${somecolumn} FROM hello WHERE  ~
  <li>]
 ~ 
 hello() ~ 
+
+<!--MPBLOCK: __FILE__-->
+	<!--$INCLUDE: ajax_check_security.htm-->
+	<!--MPLIB: JSON-->
+	<!--MPINIT: action-->
+
+	<!--MPIF: ${action} eq "populate_table"-->
+		<!--MPVAR: results = mpSQLToJSON($dbh, "SELECT * FROM dc_vms_application_questions WHERE question = 'How Did You Hear About Us?' ORDER BY IFNULL(is_retired, 'No'), answer", [])-->
+		${results}
+	<!--MPELSEIF: ${action} eq "add_update_answer" && ${answer} -->
+		<!--MPVAR: question_href = {}-->
+		<!--MPFUNCTION: ${question_href}->{'source_code'} = ${source_code}-->
+		<!--MPFUNCTION: ${question_href}->{'answer'} = ${answer}-->
+		<!--MPFUNCTION: ${question_href}->{'youth_path_id'} = ${youth_path_id}-->
+		<!--MPFUNCTION: ${question_href}->{'adult_path_id'} = ${adult_path_id}-->
+		<!--MPFUNCTION: ${question_href}->{'question'} = 'How Did You Hear About Us?'-->
+		<!--MPIF: ${sku}-->
+			<!--MPFUNCTION: ${question_href}->{'sku'} = ${sku}-->
+			<!--MPVAR: results = mpHashToSQLUpdate($dbh, "dc_vms_application_questions", ${question_href}, "sku")-->
+			/*<!--MPVAR: results = mpSQLNoReturn($dbh, "UPDATE dc_vms_application_questions SET source_code = ?, answer = ?, youth_path_id = ?, adult_path_id = ? WHERE sku = ?", [${source_code}, ${answer}, ${sku}])-->*/
+		<!--MPELSE-->
+			<!--MPVAR: results = mpHashToSQL($dbh, "dc_vms_application_questions", ${question_href})-->
+			/*<!--MPVAR: results = mpSQLInsert($dbh, "INSERT INTO dc_vms_application_questions (question, source_code, answer) VALUES ('How Did You Hear About Us?', ?, ?)", [${source_code}, ${answer}])-->*/
+		<!--MPENDIF-->
+		[${results}]
+	<!--MPELSEIF: ${action} eq "update_answer_status" && ${sku} && ${is_retired}-->
+		<!--MPVAR: results = mpSQLNoReturn($dbh, "UPDATE dc_vms_application_questions SET is_retired = ? WHERE sku = ?", [${is_retired}, ${sku}])-->
+		[${results}]
+	<!--MPELSEIF: ${action} eq "russell"-->
+		<!--MPVAR: mpsql-->
+		"
+			SELECT dc_vms_application_questions.sku AS answer_id
+				, answer AS option_name
+				, source_code
+				, 'This' AS youth_path
+				, 'That' AS adult_path
+				, IFNULL(is_retired, 'No') AS is_retired
+				, youth_path.path_name AS youth_path
+				, adult_path.path_name AS adult_path
+			FROM dc_vms_application_questions
+			LEFT JOIN dc_path AS youth_path ON (youth_path.sku = dc_vms_application_questions.youth_path_id)
+			LEFT JOIN dc_path AS adult_path ON (adult_path.sku = dc_vms_application_questions.adult_path_id)
+			WHERE question = 'How Did You Hear About Us?'
+			ORDER BY IFNULL(is_retired, 'No'), answer
+		"
+		<!--MPENDVAR-->
+		<!--MPVAR: json_href = {}-->
+		<!--MPFUNCTION: ${json_href}->{'rows'} = []-->
+		<!--MPFUNCTION: ${json_href}->{'total'} = mpPageCount($dbh, ${mpsql}, [], 1)-->
+		<!--MPVAR: mpsql = (defined(${offset}) && defined(${limit})) ? ${mpsql} . " LIMIT " . ${offset} . ", " . "${limit}" : ${mpsql}-->
+		<!--MPLOOP: SQL("${mpsql}", [], 0)-->
+			<!--MPVAR: row_href = {}-->
+			<!--MPFUNCTION: ${row_href}->{'id'} = ${answer_id}-->
+			<!--MPFUNCTION: ${row_href}->{'option_name'} = ${option_name}-->
+			<!--MPFUNCTION: ${row_href}->{'source_code'} = ${source_code}-->
+			<!--MPFUNCTION: ${row_href}->{'youth_path'} = ${youth_path}-->
+			<!--MPFUNCTION: ${row_href}->{'adult_path'} = ${adult_path}-->
+			<!--MPIF: ${is_retired} eq "Yes"-->
+				<!--MPFUNCTION: ${row_href}->{'actions'} = "<a href='#' class='btn alt restore'>Restore</a>"-->
+			<!--MPELSE-->
+				<!--MPFUNCTION: ${row_href}->{'actions'} = "<a href='#' class='btn retire'>Retire</a>&nbsp;<a href='#' class='btn edit'>Edit</a>"-->
+			<!--MPENDIF-->
+
+			<!--MPFUNCTION: push(${json_href}->{'rows'}, ${row_href})-->
+		<!--MPENDLOOP-->
+		<!--MPVAR: json = encode_json(${json_href})-->
+		<!--MPBREAK: ${json}-->
+	<!--MPENDIF-->
+
+<!--MPENDBLOCK: __FILE__-->

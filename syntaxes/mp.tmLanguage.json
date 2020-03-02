@@ -393,7 +393,7 @@
 			]
 		},
 		"mp-conditional-block": {
-			"begin": "\\[",
+			"begin": "\\[(?=.*\\|)",
 			"end": "\\]",
 			"patterns": [
 				{"include": "#mp-conditional-block-logic"},
