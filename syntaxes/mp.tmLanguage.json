@@ -432,10 +432,11 @@
 			"name": "keyword.operator.mp"
 		},
 		"mp-conditional-block-output": {
-			"begin": "(?<=\\|)\\G",
+			"begin": "(?<=\\|)",
 			"end": "((?=\\])|\\|)",
 			"patterns":[
-				{"include":"#variable-enclosed"}
+				{"include":"#variable-enclosed"},
+				{"include":"text.html.basic"}
 			]
 		},
 		"mp-template-output": {
