@@ -136,7 +136,11 @@
 			"patterns": [{
 					"begin": "'",
 					"end": "'",
-					"name": "string.quoted.single.mp"
+					"name": "string.quoted.single.mp",
+					"patterns": [
+						{"include": "#sql-injection"},
+						{"include": "#escape-characters"}
+					]
 			}]
 		},
 		"string-double-quoted": {
@@ -145,36 +149,23 @@
 				"end": "\"",
 				"name": "string.quoted.double.mp",
 				"patterns": [
-					{"include": "#variable-enclosed"},
-					{"include": "#escape-characters"}
+					{"include": "#escape-characters"},
+					{"include": "#sql-injection"},
+					{"include": "#variable-enclosed"}
+					
 				]
 			}]
 		},
 		"string": {
 			"patterns": [
-				{"include": "#sql-string-perl-qq"},
-				{"include": "#sql-string-single-quoted"},
-				{"include": "#sql-string-double-quoted"},
 				{"include": "#string-perl-qq"},
 				{"include": "#string-single-quoted"},
 				{"include": "#string-double-quoted"}
 			]
 		},
-		"sql-string-perl-qq": {
-			"comment": "Ignore case for SQL starts",
-			"begin": "qq\\s*([^\\(\\{\\[\\<\\w\\s])[\\s|\\n]*(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
-			"beginCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.begin.mp"
-			  }
-			},
-			"end": "\\1",
-			"endCaptures": {
-			  "0": {
-				"name": "punctuation.definition.string.end.mp"
-			  }
-			},
-			"name": "string.quoted.other.qq.mp",
+		"sql-injection": {
+			"begin": "(^|(?<=(\"|')))\\s*(?=(?i:(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)))",
+			"end": "(?=\\k<0-2>)",
 			"patterns": [
 				{"include": "#variable-enclosed"},
 				{"include": "#escape-characters"},
@@ -197,51 +188,11 @@
 			},
 			"name": "string.quoted.other.qq.mp",
 			"patterns": [
-				{"include": "#escape-characters"},
-				{"include": "source.sql"}
+				{"include": "#sql-injection"},
+				{"include": "#variable-enclosed"},
+				{"include": "#escape-characters"}
 			]
 		},
-		"sql-string-double-quoted": {
-            "begin": "(?i)\"[\\s|\\n]*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
-            "beginCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.begin.mp"
-                }
-            },
-            "contentName": "source.sql.embedded.mp",
-            "end": "\"",
-            "endCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.end.mp"
-                }
-            },
-            "name": "string.quoted.double.sql.mp",
-            "patterns": [
-				{"include": "#variable-enclosed"},
-				{"include": "#escape-characters"},
-				{"include": "source.sql"}
-            ]
-        },
-        "sql-string-single-quoted": {
-            "begin": "(?i)'[\\s|\\n]*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND|LIMIT|ORDER BY)\\b)",
-            "beginCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.begin.mp"
-                }
-            },
-            "contentName": "source.sql.embedded.mp",
-            "end": "'",
-            "endCaptures": {
-                "0": {
-                    "name": "punctuation.definition.string.end.mp"
-                }
-            },
-            "name": "string.quoted.single.sql.mp",
-            "patterns": [
-                {"include": "source.sql"},
-				{"include": "#escape-characters"}
-            ]
-        },
 		"regex": {
 			"patterns": [
 				{
