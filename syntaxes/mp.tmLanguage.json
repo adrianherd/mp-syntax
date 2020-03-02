@@ -393,8 +393,22 @@
 			]
 		},
 		"mp-conditional-block": {
-			"begin": "\\[(?=.*\\|)",
-			"end": "\\]",
+			"begin": "(<[^<]*)?(\\[(?=[^\\|]*\\|))",
+			"beginCaptures": {
+				"1": {
+					"patterns": [
+						{"include": "text.html.basic"}
+					]
+				}
+			},
+			"end": "\\]([^>]*>)?",
+			"endCaptures": {
+				"1": {
+					"patterns": [
+						{"include": "text.html.basic"}
+					]
+				}
+			},
 			"patterns": [
 				{"include": "#mp-conditional-block-logic"},
 				{"include": "#mp-conditional-block-output"}
