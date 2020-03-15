@@ -200,6 +200,23 @@
 					"include": "#constant"
 				},
 				{
+					"include": "#mp-special-variable"
+				},
+				{
+					"include": "#variable"
+				},
+				{
+					"name": "punctuation.accessor.mp",
+					"match": "->"
+				},
+				{
+					"comment": "#keyword-acccess, #keyword-operators"
+				}
+			]
+		},
+		"mp-special-variable": {
+			"patterns": [
+				{
 					"match": "(?<=MPBLOCK)\\s*:\\s*(\\w+)\\b",
 					"captures": {
 						"1": {
@@ -216,13 +233,15 @@
 					}
 				},
 				{
-					"match": "(?<=MPLIB)\\s*:\\s*(\\w+(,)?\\b)+",
+					"match": "(?<=MPLIB)\\s*:\\s*(.*)-->",
 					"captures": {
 						"1": {
-							"name": "variable.parameter.mp"
-						},
-						"2": {
-							"name": "mp.other"
+							"patterns": [
+								{
+									"match": "\\b\\w+\\b",
+									"name": "variable.parameter.mp"
+								}
+							]
 						}
 					}
 				},
@@ -233,18 +252,9 @@
 							"name": "variable.parameter.mp"
 						}
 					}
-				},
-				{
-					"include": "#variable"
-				},
-				{
-					"name": "punctuation.accessor.mp",
-					"match": "->"
-				},
-				{
-					"comment": "#keyword-acccess, #keyword-operators"
 				}
 			]
+
 		},
 		"function": {
 			"patterns": [
