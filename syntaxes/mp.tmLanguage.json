@@ -7,12 +7,6 @@
 			"include": "#comment"
 		},
 		{
-			"comment": "TODO: handle mpendblock , probz want different highlighting, parameter name?"
-		},
-		{
-			"comment": "TODO: handle mpinclude, highlight that filename better"
-		},
-		{
 			"include": "#variable-enclosed"
 		},
 		{
@@ -90,21 +84,7 @@
 			"beginCaptures": {
 				"0": {
 					"patterns": [
-						{
-							"comment": "test",
-							"match": "\\b\\w+\\b",
-							"name": "variable.parameter.mp"
-						},
 						{"include": "#mp-statement"}
-					]
-				},
-				"1": {
-					"patterns": [
-						{
-							"comment" : "test",
-							"match": "\\w+",
-							"name": "variable.parameter.mp"
-						}
 					]
 				}
 			},
