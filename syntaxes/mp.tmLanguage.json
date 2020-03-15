@@ -86,11 +86,25 @@
 			]
 		},
 		"mp-block-block": {
-			"begin": "(<!--\\s*MPBLOCK\\s*:.*-->)",
+			"begin": "(<!--\\s*MPBLOCK\\s*:(.*)-->)",
 			"beginCaptures": {
 				"0": {
 					"patterns": [
+						{
+							"comment": "test",
+							"match": "\\b\\w+\\b",
+							"name": "variable.parameter.mp"
+						},
 						{"include": "#mp-statement"}
+					]
+				},
+				"1": {
+					"patterns": [
+						{
+							"comment" : "test",
+							"match": "\\w+",
+							"name": "variable.parameter.mp"
+						}
 					]
 				}
 			},
@@ -204,6 +218,41 @@
 				},
 				{
 					"include": "#constant"
+				},
+				{
+					"match": "(?<=MPBLOCK)\\s*:\\s*(\\w+)\\b",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.mp"
+						}
+					}
+				},
+				{
+					"match": "(?<=MPENDBLOCK)\\s*:\\s*(\\w+)\\b",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.mp"
+						}
+					}
+				},
+				{
+					"match": "(?<=MPLIB)\\s*:\\s*(\\w+(,)?\\b)+",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.mp"
+						},
+						"2": {
+							"name": "mp.other"
+						}
+					}
+				},
+				{
+					"match": "(?<=\\$INCLUDE)\\s*:\\s*([\\w\\.\\-_]+)\\b",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.mp"
+						}
+					}
 				},
 				{
 					"include": "#variable"
