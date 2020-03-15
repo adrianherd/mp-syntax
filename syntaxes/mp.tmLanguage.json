@@ -216,6 +216,14 @@
 		},
 		"mp-special-variable": {
 			"patterns": [
+				{"include": "#mp-block-special-variable"},
+				{"include": "#mp-end-block-special-variable"},
+				{"include": "#mp-lib-special-variable"},
+				{"include": "#mp-include-special-variable"}
+			]
+		},
+		"mp-block-special-variable": {
+			"patterns": [
 				{
 					"match": "(?<=MPBLOCK)\\s*:\\s*(\\w+)\\b",
 					"captures": {
@@ -223,7 +231,11 @@
 							"name": "variable.parameter.mp"
 						}
 					}
-				},
+				}
+			]
+		},
+		"mp-end-block-special-variable": {
+			"patterns": [
 				{
 					"match": "(?<=MPENDBLOCK)\\s*:\\s*(\\w+)\\b",
 					"captures": {
@@ -231,7 +243,11 @@
 							"name": "variable.parameter.mp"
 						}
 					}
-				},
+				}
+			]
+		},
+		"mp-lib-special-variable": {
+			"patterns": [
 				{
 					"match": "(?<=MPLIB)\\s*:\\s*(.*)-->",
 					"captures": {
@@ -244,7 +260,11 @@
 							]
 						}
 					}
-				},
+				}
+			]
+		},
+		"mp-include-special-variable": {
+			"patterns": [
 				{
 					"match": "(?<=\\$INCLUDE)\\s*:\\s*([\\w\\.\\-_]+)\\b",
 					"captures": {
@@ -254,7 +274,6 @@
 					}
 				}
 			]
-
 		},
 		"function": {
 			"patterns": [
