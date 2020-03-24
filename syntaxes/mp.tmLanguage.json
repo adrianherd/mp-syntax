@@ -10,13 +10,10 @@
 			"include": "#variable-enclosed"
 		},
 		{
-			"include": "#mp"
+			"include": "#mp-html"
 		},
 		{
 			"comment": "catch UWE code"
-		},
-		{
-			"include": "text.html.basic"
 		}
 	],
 	"repository": {
@@ -35,11 +32,41 @@
 				{"include": "#mp-statement"},
 				{
 					"comment": "[${a} == 1|<p>something</p>|<li>something else</li>]",
-					"include": "#mp-conditional-block"
+					"include": "#mp-conditionals"
 				},
 				{
 					"comment": "~mpSQL(...)~ ",
 					"include": "#mp-template-output"
+				}
+			]
+		},
+		"mp-css": {
+			"patterns": [
+				{
+					"include": "#mp"
+				},
+				{
+					"include": "source.css"
+				}
+			]
+		},
+		"mp-html": {
+			"patterns": [
+				{
+					"include": "#mp"
+				},
+				{
+					"include": "text.html.basic"
+				}
+			]
+		},
+		"mp-js": {
+			"patterns": [
+				{
+					"include": "#mp"
+				},
+				{
+					"include": "source.js"
 				}
 			]
 		},
@@ -450,7 +477,21 @@
 				{"include": "source.sql"}
 			]
 		},
+		"mp-conditionals": {
+			"patterns": [
+				{"include": "#mp-conditional-block"},
+				{"include": "#mp-conditional-block-html"}
+			]
+		},
 		"mp-conditional-block": {
+			"begin": "\\[(?=[^\\|]*\\|)",
+			"end": "\\]",
+			"patterns": [
+				{"include": "#mp-conditional-block-logic"},
+				{"include": "#mp-conditional-block-output"}
+			]
+		},
+		"mp-conditional-block-html": {
 			"begin": "(<[^<]*)?\\[(?=[^\\|]*\\|)",
 			"beginCaptures": {
 				"1": {

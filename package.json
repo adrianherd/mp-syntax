@@ -19,7 +19,7 @@
                 "id": "mp",
                 "extensions": [
                     ".htm",
-                    "html"
+                    ".html"
                 ],
                 "aliases": [
                     "MP",
@@ -36,6 +36,11 @@
                 "language": "mp",
                 "scopeName": "source.mp",
                 "path": "./syntaxes/mp.tmLanguage.json"
+            },
+            {
+                "language": "html",
+                "scopeName": "text.html.basic",
+                "path": "./syntaxes/html.tmLanguage.json"
             }
         ]
     }
